@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.version     = Select2::Rails::VERSION
   s.authors     = ["Rogerio Medeiros"]
   s.email       = ["argerim@gmail.com"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/argerim/select2-rails"
   s.summary     = %q{Integrate Select2 javascript library with Rails asset pipeline}
   s.description = %q{Select2 is a jQuery based replacement for select boxes. It supports searching, remote data sets, and infinite scrolling of results. This gem integrates Select2 with Rails asset pipeline for easy of use.}
 

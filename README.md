@@ -35,4 +35,4 @@ If you wont to contribute, please:
 
 ## Copyright
 
-Copyright (c) 2012 Rogerio Medeiros. See LICENSE for details.
+Copyright (c) 2012 Rogerio Medeiros. See [LICENSE](https://github.com/argerim/select2-rails/blob/master/LICENSE) for details.

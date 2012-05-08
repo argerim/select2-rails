@@ -2,3 +2,4 @@
 .bundle
 Gemfile.lock
 pkg/*
+select2-rails-0.0.1.gem

@@ -9,24 +9,30 @@ The `select2-rails` gem integrates the `Select2` with the Rails asset pipeline.
 
 ### Install select2-rails gem
 
-Add `select2-rails` in Gemfile
+Add `select2-rails` in Gemfile and run `bundle install`.
 
 	gem "select2-rails"
 
-Run `bundle install`
-
 ### Include select2-rails javascript assets
 
-Add to your `app/assets/javascripts/application.js`
+Add to your `app/assets/javascripts/application.js`.
 
 	//= require select2
 
 ### Include select2-rails stylesheet assets
 
-Add to your `app/assets/stylesheets/application.css`
+Add to your `app/assets/stylesheets/application.css`.
 
 	*= require select2
 
-## License
+## Contributions
 
-use MIT license.
+If you wont to contribute, please:
+
+	* Fork the project.
+	* Make your feature addition or bug fix.	
+	* Send me a pull request on Github.
+
+## Copyright
+
+Copyright (c) 2012 Rogerio Medeiros. See LICENSE for details.

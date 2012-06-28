@@ -287,8 +287,7 @@
     &.select2-result-with-children .select2-result-label
       font-weight: bold
   .select2-result-label
-    line-height: 80%
-    padding: 7px 7px 8px
+    padding: 3px 7px 4px
     margin: 0
     cursor: pointer
   .select2-highlighted
@@ -386,6 +385,8 @@
         -moz-box-shadow: none
         -o-box-shadow: none
         box-shadow: none
+        &.select2-active
+          background: white image-url('spinner.gif') no-repeat 100% !important
 
 .select2-default
   color: #999 !important
@@ -454,3 +455,10 @@
 /* disabled styles
 
 /* end multiselect
+
+.select2-match
+  text-decoration: underline
+
+.select2-offscreen
+  position: absolute
+  left: -1000px

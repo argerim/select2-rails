@@ -380,6 +380,8 @@
 
     /**
      * blurs any Select2 container that has focus when an element outside them was clicked or received focus
+     *
+     * also takes care of clicks on label tags that point to the source element
      */
     $(document).ready(function () {
         $(document).delegate("*", "mousedown touchend", function (e) {
@@ -393,6 +395,13 @@
                 $(document).find("div.select2-drop-active").each(function () {
                     if (this !== target) $(this).data("select2").blur();
                 });
+            }
+
+            target=$(e.target);
+            if ("LABEL" === e.target.tagName && target.attr("for").length > 0) {
+                target = $("#"+target.attr("for"));
+                target = target.data("select2");
+                if (target !== undefined) { target.focus(); e.preventDefault();}
             }
         });
     });
@@ -663,7 +672,10 @@
                         opts.initSelection = function (element, callback) {
                             var data = [];
                             $(splitVal(element.val(), opts.separator)).each(function () {
-                                data.push({id: this, text: this});
+                                var id = this, text = this, tags=opts.tags;
+                                if ($.isFunction(tags)) tags=tags();
+                                $(tags).each(function() { if (equal(this.id, id)) { text = this.text; return false; } });
+                                data.push({id: id, text: text});
                             });
 
                             callback(data);
@@ -841,7 +853,7 @@
             this.clearDropdownAlignmentPreference();
 
             this.dropdown.hide();
-            this.container.removeClass("select2-dropdown-open");
+            this.container.removeClass("select2-dropdown-open").removeClass("select2-container-active");
             this.results.empty();
             this.clearSearch();
 
@@ -1080,6 +1092,8 @@
              this makes sure the search field is focussed even if the current event would blur it */
             window.setTimeout(this.bind(function () {
                 this.search.focus();
+                // reset the value so IE places the cursor at the end of the input box
+                this.search.val(this.search.val());
             }), 10);
         },
 
@@ -1142,6 +1156,8 @@
                     }
 
                     return null;
+                } else if ($.isFunction(this.opts.width)) {
+                    return this.opts.width();
                 } else {
                     return this.opts.width;
                }
@@ -1178,6 +1194,7 @@
 
         // single
         opening: function () {
+            this.search.show();
             this.parent.opening.apply(this, arguments);
             this.dropdown.removeClass("select2-offscreen");
         },
@@ -1192,7 +1209,7 @@
         // single
         focus: function () {
             this.close();
-            this.search.focus();
+            this.selection.focus();
         },
 
         // single
@@ -1203,7 +1220,7 @@
         // single
         cancel: function () {
             this.parent.cancel.apply(this, arguments);
-            this.search.focus();
+            this.selection.focus();
         },
 
         // single
@@ -1243,6 +1260,7 @@
                             return;
                     }
                 } else {
+
                     if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e) || e.which === KEY.ESC) {
                         return;
                     }
@@ -1251,10 +1269,17 @@
 
                     if (e.which === KEY.ENTER) {
                         // do not propagate the event otherwise we open, and propagate enter which closes
-                        killEvent(e);
                         return;
                     }
                 }
+            }));
+
+            this.search.bind("focus", this.bind(function() {
+                this.selection.attr("tabIndex", "-1");
+            }));
+            this.search.bind("blur", this.bind(function() {
+                if (!this.opened()) this.container.removeClass("select2-container-active");
+                window.setTimeout(this.bind(function() { this.selection.removeAttr("tabIndex"); }), 10);
             }));
 
             selection.bind("click", this.bind(function (e) {
@@ -1262,7 +1287,7 @@
 
                 if (this.opened()) {
                     this.close();
-                    this.search.focus();
+                    this.selection.focus();
                 } else if (this.enabled) {
                     this.open();
                 }
@@ -1273,16 +1298,65 @@
 
             dropdown.bind("click", this.bind(function() { this.search.focus(); }));
 
+            selection.bind("focus", this.bind(function() {
+                this.container.addClass("select2-container-active");
+                // hide the search so the tab key does not focus on it
+                this.search.attr("tabIndex", "-1");
+            }));
+
+            selection.bind("blur", this.bind(function() {
+                this.container.removeClass("select2-container-active");
+                window.setTimeout(this.bind(function() { this.search.removeAttr("tabIndex"); }), 10);
+            }));
+
+            selection.bind("keydown", this.bind(function(e) {
+                if (!this.enabled) return;
+
+                if (e.which === KEY.PAGE_UP || e.which === KEY.PAGE_DOWN) {
+                    // prevent the page from scrolling
+                    killEvent(e);
+                    return;
+                }
+
+                if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e) || e.which === KEY.ESC) {
+                    return;
+                }
+
+                this.open();
+
+                if (e.which === KEY.ENTER) {
+                    // do not propagate the event otherwise we open, and propagate enter which closes
+                    killEvent(e);
+                    return;
+                }
+
+                // do not set the search input value for non-alpha-numeric keys
+                // otherwise pressing down results in a '(' being set in the search field
+                if (e.which < 48 ) { // '0' == 48
+                    killEvent(e);
+                    return;
+                }
+
+                var keyWritten = String.fromCharCode(e.which).toLowerCase();
+
+                if (e.shiftKey) {
+                    keyWritten = keyWritten.toUpperCase();
+                }
+
+                this.search.val(keyWritten);
+
+                // prevent event propagation so it doesnt replay on the now focussed search field and result in double key entry
+                killEvent(e);
+            }));
+
             selection.delegate("abbr", "click", this.bind(function (e) {
                 if (!this.enabled) return;
                 this.clear();
                 killEvent(e);
                 this.close();
                 this.triggerChange();
-                this.search.focus();
+                this.selection.focus();
             }));
-
-            selection.bind("focus", this.bind(function() { this.search.focus(); }));
 
             this.setPlaceholder();
 
@@ -1291,6 +1365,7 @@
             }));
         },
 
+        // single
         clear: function() {
             this.opts.element.val("");
             this.selection.find("span").empty();
@@ -1391,7 +1466,7 @@
             this.opts.element.val(this.id(data));
             this.updateSelection(data);
             this.close();
-            this.search.focus();
+            this.selection.focus();
 
             if (!equal(old, this.id(data))) { this.triggerChange(); }
         },
@@ -1418,7 +1493,7 @@
 
         // single
         val: function () {
-            var val, data = null;
+            var val, data = null, self = this;
 
             if (arguments.length === 0) {
                 return this.opts.element.val();
@@ -1427,7 +1502,6 @@
             val = arguments[0];
 
             if (this.select) {
-                // val is an id
                 this.select
                     .val(val)
                     .find(":selected").each2(function (i, elm) {
@@ -1435,13 +1509,22 @@
                         return false;
                     });
                 this.updateSelection(data);
+                this.setPlaceholder();
             } else {
-                // val is an object. !val is true for [undefined,null,'']
-                this.opts.element.val(!val ? "" : this.id(val));
-                this.updateSelection(val);
+                if (this.opts.initSelection === undefined) {
+                    throw new Error("cannot call val() if initSelection() is not defined");
+                }
+                // val is an id. !val is true for [undefined,null,'']
+                if (!val) {
+                    this.clear();
+                    return;
+                }
+                this.opts.initSelection(this.opts.element, function(data){
+                    self.opts.element.val(!data ? "" : self.id(data));
+                    self.updateSelection(data);
+                    self.setPlaceholder();
+                });
             }
-            this.setPlaceholder();
-
         },
 
         // single
@@ -1574,6 +1657,10 @@
             }));
 
             this.search.bind("keyup", this.bind(this.resizeSearch));
+
+            this.search.bind("blur", this.bind(function() {
+                this.container.removeClass("select2-container-active");
+            }));
 
             this.container.delegate(selector, "click", this.bind(function (e) {
                 if (!this.enabled) return;
@@ -1886,21 +1973,33 @@
 
             val = arguments[0];
 
+            if (!val) {
+                this.opts.element.val("");
+                this.updateSelection([]);
+                this.clearSearch();
+                return;
+            }
+
+            // val is a list of ids
+            this.setVal(val);
+
             if (this.select) {
-                // val is a list of ids
-                this.setVal(val);
                 this.select.find(":selected").each(function () {
                     data.push({id: $(this).attr("value"), text: $(this).text()});
                 });
                 this.updateSelection(data);
             } else {
-                val = (val === null) ? [] : val;
-                // val is a list of objects
-                $(val).each(function () { data.push(self.id(this)); });
-                this.setVal(data);
-                this.updateSelection(val);
-            }
+                if (this.opts.initSelection === undefined) {
+                    throw new Error("val() cannot be called if initSelection() is not defined")
+                }
 
+                this.opts.initSelection(this.opts.element, function(data){
+                    var ids=$(data).map(self.id);
+                    self.setVal(ids);
+                    self.updateSelection(data);
+                    self.clearSearch();
+                });
+            }
             this.clearSearch();
         },
 

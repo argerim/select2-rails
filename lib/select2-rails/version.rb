@@ -1,5 +1,5 @@
 module Select2
   module Rails
-    VERSION = "0.0.9"
+    VERSION = "2.1.0"
   end
 end

@@ -24,6 +24,9 @@ Add to your `app/assets/javascripts/application.js`.
 Add to your `app/assets/stylesheets/application.css`.
 
 	*= require select2
+	
+## Version
+The most current release of select2-rails uses select2 v2.1.
 
 ## Contributions
 

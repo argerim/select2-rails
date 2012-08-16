@@ -26,7 +26,7 @@ Add to your `app/assets/stylesheets/application.css`:
 	*= require select2
 
 ## Version
-From `v2.1.0` on, `select2-rails`'s version will match the version of `Select2` it uses. Currently, `select2-rails` uses `Select2 v2.1`.
+From `v2.1.0` on, `select2-rails`'s version will match the version of `Select2` it uses. Currently, `select2-rails` uses `Select2 v3.1`.
 
 The last number of the version is the patch version specific to the gem. For example, for a version of the form `2.x.y`, `2.x` is the release of `Select2` we should be compatible with, and y is the patch version specific to the gem (ie. to resolve any gem-specific issues that crop up).
 

@@ -1,7 +1,7 @@
 ﻿/*
  Copyright 2012 Igor Vaynberg
 
- Version: 3.0 Timestamp: Tue Jul 31 21:09:16 PDT 2012
+ Version: 3.1 Timestamp: Tue Aug 14 09:05:17 PDT 2012
 
  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in
  compliance with the License. You may obtain a copy of the License in the LICENSE file, or at:
@@ -13,23 +13,23 @@
  See the License for the specific language governing permissions and limitations under the License.
  */
  (function ($) {
- 	if(typeof $.fn.each2 == "undefined"){
- 		$.fn.extend({
- 			/*
-			* 4-10 times faster .each replacement
-			* use it carefully, as it overrides jQuery context of element on each iteration
-			*/
-			each2 : function (c) {
-				var j = $([0]), i = -1, l = this.length;
-				while (
-					++i < l
-					&& (j.context = j[0] = this[i])
-					&& c.call(j[0], i, j) !== false //"this"=DOM, i=index, j=jQuery object
-				);
-				return this;
-			}
- 		});
- 	}
+    if(typeof $.fn.each2 == "undefined"){
+        $.fn.extend({
+            /*
+            * 4-10 times faster .each replacement
+            * use it carefully, as it overrides jQuery context of element on each iteration
+            */
+            each2 : function (c) {
+                var j = $([0]), i = -1, l = this.length;
+                while (
+                    ++i < l
+                    && (j.context = j[0] = this[i])
+                    && c.call(j[0], i, j) !== false //"this"=DOM, i=index, j=jQuery object
+                );
+                return this;
+            }
+        });
+    }
 })(jQuery);
 
 (function ($, undefined) {
@@ -71,8 +71,8 @@
             }
             return false;
         },
-        isControl: function (k) {
-            k = k.which ? k.which : k;
+        isControl: function (e) {
+            var k = e.which;
             switch (k) {
             case KEY.SHIFT:
             case KEY.CTRL:
@@ -80,7 +80,7 @@
                 return true;
             }
 
-            if (k.metaKey) return true;
+            if (e.metaKey) return true;
 
             return false;
         },
@@ -94,7 +94,7 @@
 
     function escapeMarkup(markup) {
         if (markup && typeof(markup) === "string") {
-            return markup.replace("&", "&amp;");
+            return markup.replace(/&/g, "&amp;");
         } else {
             return markup;
         }
@@ -181,7 +181,7 @@
      * the elements under the pointer are scrolled.
      */
     function installFilteredMouseMove(element) {
-	    element.bind("mousemove", function (e) {
+        element.bind("mousemove", function (e) {
             var lastpos = $.data(document, "select2-lastpos");
             if (lastpos === undefined || lastpos.x !== e.pageX || lastpos.y !== e.pageY) {
                 $(e.target).trigger("mousemove-filtered", e);
@@ -233,21 +233,21 @@
 
     function measureTextWidth(e) {
         if (!sizer){
-        	var style = e[0].currentStyle || window.getComputedStyle(e[0], null);
-        	sizer = $("<div></div>").css({
-	            position: "absolute",
-	            left: "-10000px",
-	            top: "-10000px",
-	            display: "none",
-	            fontSize: style.fontSize,
-	            fontFamily: style.fontFamily,
-	            fontStyle: style.fontStyle,
-	            fontWeight: style.fontWeight,
-	            letterSpacing: style.letterSpacing,
-	            textTransform: style.textTransform,
-	            whiteSpace: "nowrap"
-	        });
-        	$("body").append(sizer);
+            var style = e[0].currentStyle || window.getComputedStyle(e[0], null);
+            sizer = $("<div></div>").css({
+                position: "absolute",
+                left: "-10000px",
+                top: "-10000px",
+                display: "none",
+                fontSize: style.fontSize,
+                fontFamily: style.fontFamily,
+                fontStyle: style.fontStyle,
+                fontWeight: style.fontWeight,
+                letterSpacing: style.letterSpacing,
+                textTransform: style.textTransform,
+                whiteSpace: "nowrap"
+            });
+            $("body").append(sizer);
         }
         sizer.text(e.val());
         return sizer.width();
@@ -277,6 +277,7 @@
      * @param options.url url for the data
      * @param options.data a function(searchTerm, pageNumber, context) that should return an object containing query string parameters for the above url.
      * @param options.dataType request data type: ajax, jsonp, other datatatypes supported by jQuery's $.ajax function or the transport function if specified
+     * @param options.traditional a boolean flag that should be true if you wish to use the traditional style of param serialization for the ajax request
      * @param options.quietMillis (optional) milliseconds to wait before making the ajaxRequest, helps debounce the ajax function if invoked too often
      * @param options.results a function(remoteData, pageNumber) that converts data returned form the remote request to the format expected by Select2.
      *      The expected format is an object containing the following keys:
@@ -297,6 +298,7 @@
                 var requestNumber = requestSequence, // this request's sequence number
                     data = options.data, // ajax data function
                     transport = options.transport || $.ajax,
+                    traditional = options.traditional || false,
                     type = options.type || 'GET'; // set type of request (GET or POST)
 
                 data = data.call(this, query.term, query.page, query.context);
@@ -308,6 +310,7 @@
                     dataType: options.dataType,
                     data: data,
                     type: type,
+                    traditional: traditional,
                     success: function (data) {
                         if (requestNumber < requestSequence) {
                             return;
@@ -396,8 +399,77 @@
      */
     function checkFormatter(formatter, formatterName) {
         if ($.isFunction(formatter)) return true;
-        if (!formatter) return fasle;
+        if (!formatter) return false;
         throw new Error("formatterName must be a function or a falsy value");
+    }
+
+    function evaluate(val) {
+        return $.isFunction(val) ? val() : val;
+    }
+
+    function countResults(results) {
+        var count = 0;
+        $.each(results, function(i, item) {
+            if (item.children) {
+                count += countResults(item.children);
+            } else {
+                count++;
+            }
+        });
+        return count;
+    }
+
+    /**
+     * Default tokenizer. This function uses breaks the input on substring match of any string from the
+     * opts.tokenSeparators array and uses opts.createSearchChoice to create the choice object. Both of those
+     * two options have to be defined in order for the tokenizer to work.
+     *
+     * @param input text user has typed so far or pasted into the search field
+     * @param selection currently selected choices
+     * @param selectCallback function(choice) callback tho add the choice to selection
+     * @param opts select2's opts
+     * @return undefined/null to leave the current input unchanged, or a string to change the input to the returned value
+     */
+    function defaultTokenizer(input, selection, selectCallback, opts) {
+        var original = input, // store the original so we can compare and know if we need to tell the search to update its text
+            dupe = false, // check for whether a token we extracted represents a duplicate selected choice
+            token, // token
+            index, // position at which the separator was found
+            i, l, // looping variables
+            separator; // the matched separator
+
+        if (!opts.createSearchChoice || !opts.tokenSeparators || opts.tokenSeparators.length < 1) return undefined;
+
+        while (true) {
+            index = -1;
+
+            for (i = 0, l = opts.tokenSeparators.length; i < l; i++) {
+                separator = opts.tokenSeparators[i];
+                index = input.indexOf(separator);
+                if (index >= 0) break;
+            }
+
+            if (index < 0) break; // did not find any token separator in the input string, bail
+
+            token = input.substring(0, index);
+            input = input.substring(index + separator.length);
+
+            if (token.length > 0) {
+                token = opts.createSearchChoice(token, selection);
+                if (token !== undefined && token !== null && opts.id(token) !== undefined && opts.id(token) !== null) {
+                    dupe = false;
+                    for (i = 0, l = selection.length; i < l; i++) {
+                        if (equal(opts.id(token), opts.id(selection[i]))) {
+                            dupe = true; break;
+                        }
+                    }
+
+                    if (!dupe) selectCallback(token);
+                }
+            }
+        }
+
+        if (original.localeCompare(input) != 0) return input;
     }
 
     /**
@@ -428,10 +500,6 @@
             }
         });
     });
-
-    function evaluate(val) {
-        return $.isFunction(val) ? val() : val;
-    }
 
     /**
      * Creates a new class
@@ -476,6 +544,9 @@
             this.enabled=true;
             this.container = this.createContainer();
 
+            this.containerId="s2id"+nextUid();
+            this.container.attr("id", this.containerId);
+
             // cache the body so future lookups are cheap
             this.body = thunk(function() { return opts.element.closest("body"); });
 
@@ -490,11 +561,10 @@
             this.opts.element
                 .data("select2", this)
                 .hide()
-                .after(this.container);
+                .before(this.container);
             this.container.data("select2", this);
 
             this.dropdown = this.container.find(".select2-drop");
-            this.dropdown.css(evaluate(opts.dropdownCss));
             this.dropdown.addClass(evaluate(opts.dropdownCssClass));
             this.dropdown.data("select2", this);
 
@@ -559,7 +629,7 @@
                 this.monitorSource();
             }
 
-            if (opts.element.is(":disabled")) this.disable();
+            if (opts.element.is(":disabled") || opts.element.is("[readonly='readonly']")) this.disable();
         },
 
         // abstract
@@ -585,9 +655,6 @@
                 this.select = select = opts.element;
             }
 
-            //Custom tags separator.
-            opts.separator = opts.separator || ",";
-
             if (select) {
                 // these options are not allowed when attached to a select because they are picked up off the element itself
                 $.each(["id", "multiple", "ajax", "query", "createSearchChoice", "initSelection", "data", "tags"], function () {
@@ -599,7 +666,7 @@
 
             opts = $.extend({}, {
                 populateResults: function(container, results, query) {
-                    var populate,  data, result, children, id=this.opts.id;
+                    var populate,  data, result, children, id=this.opts.id, self=this;
 
                     populate=function(results, container, depth) {
 
@@ -615,6 +682,7 @@
                             node.addClass("select2-result");
                             node.addClass(selectable ? "select2-result-selectable" : "select2-result-unselectable");
                             if (compound) { node.addClass("select2-result-with-children"); }
+                            node.addClass(self.opts.formatResultCssClass(result));
 
                             label=$("<div></div>");
                             label.addClass("select2-result-label");
@@ -658,10 +726,10 @@
                         var group;
                         if (element.is("option")) {
                             if (query.matcher(term, element.text(), element)) {
-                                collection.push({id:element.attr("value"), text:element.text(), element: element.get()});
+                                collection.push({id:element.attr("value"), text:element.text(), element: element.get(), css: element.attr("class")});
                             }
                         } else if (element.is("optgroup")) {
-                            group={text:element.attr("label"), children:[], element: element.get()};
+                            group={text:element.attr("label"), children:[], element: element.get(), css: element.attr("class")};
                             element.children().each2(function(i, elm) { process(elm, group.children); });
                             if (group.children.length>0) {
                                 collection.push(group);
@@ -685,6 +753,7 @@
                 });
                 // this is needed because inside val() we construct choices from options and there id is hardcoded
                 opts.id=function(e) { return e.id; };
+                opts.formatResultCssClass = function(data) { return data.css; }
             } else {
                 if (!("query" in opts)) {
                     if ("ajax" in opts) {
@@ -858,10 +927,32 @@
          */
         // abstract
         opening: function() {
+            var cid = this.containerId, selector = "#"+ cid,
+                scroll = "scroll." + cid, resize = "resize." + cid;
+
+            this.container.parents().each(function() {
+                $(this).bind(scroll, function() {
+                    var s2 = $(selector);
+                    if (s2.length == 0) {
+                        $(this).unbind(scroll);
+                    }
+                    s2.select2("close");
+                });
+            });
+
+            $(window).bind(resize, function() {
+                var s2 = $(selector);
+                if (s2.length == 0) {
+                    $(window).unbind(resize);
+                }
+                s2.select2("close");
+            });
+
             this.clearDropdownAlignmentPreference();
 
             if (this.search.val() === " ") { this.search.val(""); }
 
+            this.dropdown.css(evaluate(this.opts.dropdownCss));
             this.dropdown.addClass("select2-drop-active");
             this.container.addClass("select2-dropdown-open").addClass("select2-container-active");
 
@@ -882,6 +973,13 @@
         // abstract
         close: function () {
             if (!this.opened()) return;
+
+            var self = this;
+
+            this.container.parents().each(function() {
+                $(this).unbind("scroll." + self.containerId);
+            });
+            $(window).unbind("resize." + this.containerId);
 
             this.clearDropdownAlignmentPreference();
 
@@ -984,7 +1082,7 @@
         highlightUnderEvent: function (event) {
             var el = $(event.target).closest(".select2-result-selectable");
             if (el.length > 0 && !el.is(".select2-highlighted")) {
-        		var choices = this.results.find('.select2-result-selectable');
+                var choices = this.results.find('.select2-result-selectable');
                 this.highlight(choices.index(el));
             } else if (el.length == 0) {
                 // if we are over an unselectable item remove al highlights
@@ -1018,7 +1116,7 @@
                     self.opts.populateResults.call(this, results, data.results, {term: term, page: page, context:context});
 
                     if (data.more===true) {
-                        more.detach().appendTo(results.children(":last")).text(self.opts.formatLoadMore(page+1));
+                        more.detach().appendTo(results).text(self.opts.formatLoadMore(page+1));
                         window.setTimeout(function() { self.loadMoreIfNeeded(); }, 10);
                     } else {
                         more.remove();
@@ -1030,11 +1128,18 @@
         },
 
         /**
+         * Default tokenizer function which does nothing
+         */
+        tokenize: function() {
+
+        },
+
+        /**
          * @param initial whether or not this is the call to this method right after the dropdown has been opened
          */
         // abstract
         updateResults: function (initial) {
-            var search = this.search, results = this.results, opts = this.opts, data, self=this;
+            var search = this.search, results = this.results, opts = this.opts, data, self=this, input;
 
             // if the search is currently hidden we do not alter the results
             if (initial !== true && (this.showSearchInput === false || !this.opened())) {
@@ -1057,14 +1162,23 @@
             if (opts.maximumSelectionSize >=1) {
                 data = this.data();
                 if ($.isArray(data) && data.length >= opts.maximumSelectionSize && checkFormatter(opts.formatSelectionTooBig, "formatSelectionTooBig")) {
-            	    render("<li class='select2-selection-limit'>" + opts.formatSelectionTooBig(opts.maximumSelectionSize) + "</li>");
-            	    return;
+                    render("<li class='select2-selection-limit'>" + opts.formatSelectionTooBig(opts.maximumSelectionSize) + "</li>");
+                    return;
                 }
             }
 
             if (search.val().length < opts.minimumInputLength && checkFormatter(opts.formatInputTooShort, "formatInputTooShort")) {
                 render("<li class='select2-no-results'>" + opts.formatInputTooShort(search.val(), opts.minimumInputLength) + "</li>");
                 return;
+            }
+            else {
+                render("<li class='select2-searching'>" + opts.formatSearching() + "</li>");
+            }
+
+            // give the tokenizer a chance to pre-process the input
+            input = this.tokenize();
+            if (input != undefined && input != null) {
+                search.val(input);
             }
 
             this.resultsPage = 1;
@@ -1101,7 +1215,7 @@
                 self.opts.populateResults.call(this, results, data.results, {term: search.val(), page: this.resultsPage, context:null});
 
                 if (data.more === true && checkFormatter(opts.formatLoadMore, "formatLoadMore")) {
-                    results.children().filter(":last").append("<li class='select2-more-results'>" + escapeMarkup(opts.formatLoadMore(this.resultsPage)) + "</li>");
+                    results.append("<li class='select2-more-results'>" + escapeMarkup(opts.formatLoadMore(this.resultsPage)) + "</li>");
                     window.setTimeout(function() { self.loadMoreIfNeeded(); }, 10);
                 }
 
@@ -1215,7 +1329,7 @@
 
         // single
 
-		createContainer: function () {
+        createContainer: function () {
             var container = $("<div></div>", {
                 "class": "select2-container"
             }).html([
@@ -1306,6 +1420,10 @@
                         return;
                     }
 
+                    if (this.opts.openOnEnter === false && e.which === KEY.ENTER) {
+                        return;
+                    }
+
                     this.open();
 
                     if (e.which === KEY.ENTER) {
@@ -1332,7 +1450,6 @@
                 } else if (this.enabled) {
                     this.open();
                 }
-                killEvent(e);
 
                 clickingInside = false;
             }));
@@ -1346,7 +1463,9 @@
             }));
 
             selection.bind("blur", this.bind(function() {
-                this.container.removeClass("select2-container-active");
+                if (!this.opened()) {
+                    this.container.removeClass("select2-container-active");
+                }
                 window.setTimeout(this.bind(function() { this.search.attr("tabIndex", this.opts.element.attr("tabIndex")); }), 10);
             }));
 
@@ -1359,7 +1478,19 @@
                     return;
                 }
 
-                if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e) || e.which === KEY.ESC) {
+                if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e)
+                 || e.which === KEY.ESC) {
+                    return;
+                }
+
+                if (this.opts.openOnEnter === false && e.which === KEY.ENTER) {
+                    return;
+                }
+
+                if (e.which == KEY.DELETE) {
+                    if (this.opts.allowClear) {
+                        this.clear();
+                    }
                     return;
                 }
 
@@ -1384,6 +1515,8 @@
                     keyWritten = keyWritten.toUpperCase();
                 }
 
+                // focus the field before calling val so the cursor ends up after the value instead of before
+                this.search.focus();
                 this.search.val(keyWritten);
 
                 // prevent event propagation so it doesnt replay on the now focussed search field and result in double key entry
@@ -1489,9 +1622,7 @@
             // hide the search box if this is the first we got the results and there are a few of them
 
             if (initial === true) {
-                // TODO below we use data.results.length, but what we really need is something recursive to calc the length
-                // TODO in case there are optgroups
-                showSearchInput = this.showSearchInput = data.results.length >= this.opts.minimumResultsForSearch;
+                showSearchInput = this.showSearchInput = countResults(data.results) >= this.opts.minimumResultsForSearch;
                 this.dropdown.find(".select2-search")[showSearchInput ? "removeClass" : "addClass"]("select2-search-hidden");
 
                 //add "select2-with-searchbox" to the container if search box is shown
@@ -1602,14 +1733,14 @@
                 "    <ul class='select2-choices'>",
                 //"<li class='select2-search-choice'><span>California</span><a href="javascript:void(0)" class="select2-search-choice-close"></a></li>" ,
                 "  <li class='select2-search-field'>" ,
-                "    <input type='text' autocomplete='off' style='width: 25px;' class='select2-input'>" ,
+                "    <input type='text' autocomplete='off' class='select2-input'>" ,
                 "  </li>" ,
                 "</ul>" ,
                 "<div class='select2-drop select2-drop-multi' style='display:none;'>" ,
                 "   <ul class='select2-results'>" ,
                 "   </ul>" ,
                 "</div>"].join(""));
-			return container;
+            return container;
         },
 
         // multi
@@ -1685,7 +1816,12 @@
                     }
                 }
 
-                if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e) || e.which === KEY.BACKSPACE || e.which === KEY.ESC) {
+                if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e)
+                 || e.which === KEY.BACKSPACE || e.which === KEY.ESC) {
+                    return;
+                }
+
+                if (this.opts.openOnEnter === false && e.which === KEY.ENTER) {
                     return;
                 }
 
@@ -1792,7 +1928,7 @@
             this.parent.opening.apply(this, arguments);
 
             this.clearPlaceholder();
-			this.resizeSearch();
+            this.resizeSearch();
             this.focusSearch();
         },
 
@@ -1833,6 +1969,18 @@
             self.postprocessResults();
         },
 
+        tokenize: function() {
+            var input = this.search.val();
+            input = this.opts.tokenizer(input, this.data(), this.bind(this.onSelect), this.opts);
+            if (input != null && input != undefined) {
+                this.search.val(input);
+                if (input.length > 0) {
+                    this.open();
+                }
+            }
+
+        },
+
         // multi
         onSelect: function (data) {
             this.addSelectedChoice(data);
@@ -1842,10 +1990,9 @@
                 this.close();
                 this.search.width(10);
             } else {
-                this.search.width(10);
-                this.resizeSearch();
-
                 if (this.countSelectableResults()>0) {
+                    this.search.width(10);
+                    this.resizeSearch();
                     this.positionDropdown();
                 } else {
                     // if nothing left to select close
@@ -1880,6 +2027,7 @@
             formatted=this.opts.formatSelection(data, choice);
             choice.find("div").replaceWith("<div>"+escapeMarkup(formatted)+"</div>");
             choice.find(".select2-search-choice-close")
+                .bind("mousedown", killEvent)
                 .bind("click dblclick", this.bind(function (e) {
                 if (!this.enabled) return;
 
@@ -1965,7 +2113,7 @@
         resizeSearch: function () {
 
             var minimumWidth, left, maxWidth, containerLeft, searchWidth,
-            	sideBorderPadding = getSideBorderPadding(this.search);
+                sideBorderPadding = getSideBorderPadding(this.search);
 
             minimumWidth = measureTextWidth(this.search) + 10;
 
@@ -1975,7 +2123,6 @@
             containerLeft = this.selection.offset().left;
 
             searchWidth = maxWidth - (left - containerLeft) - sideBorderPadding;
-
             if (searchWidth < minimumWidth) {
                 searchWidth = maxWidth - sideBorderPadding;
             }
@@ -2109,7 +2256,7 @@
         var args = Array.prototype.slice.call(arguments, 0),
             opts,
             select2,
-            value, multiple, allowedMethods = ["val", "destroy", "open", "close", "focus", "isFocused", "container", "onSortStart", "onSortEnd", "enable", "disable", "positionDropdown", "data"];
+            value, multiple, allowedMethods = ["val", "destroy", "opened", "open", "close", "focus", "isFocused", "container", "onSortStart", "onSortEnd", "enable", "disable", "positionDropdown", "data"];
 
         this.each(function () {
             if (args.length === 0 || typeof(args[0]) === "object") {
@@ -2151,6 +2298,7 @@
     $.fn.select2.defaults = {
         width: "copy",
         closeOnSelect: true,
+        openOnEnter: true,
         containerCss: {},
         dropdownCss: {},
         containerCssClass: "",
@@ -2163,17 +2311,22 @@
         formatSelection: function (data, container) {
             return data.text;
         },
+        formatResultCssClass: function(data) {return undefined;},
         formatNoMatches: function () { return "No matches found"; },
         formatInputTooShort: function (input, min) { return "Please enter " + (min - input.length) + " more characters"; },
         formatSelectionTooBig: function (limit) { return "You can only select " + limit + " items"; },
         formatLoadMore: function (pageNumber) { return "Loading more results..."; },
+        formatSearching: function () { return "Searching..."; },
         minimumResultsForSearch: 0,
         minimumInputLength: 0,
         maximumSelectionSize: 0,
         id: function (e) { return e.id; },
         matcher: function(term, text) {
             return text.toUpperCase().indexOf(term.toUpperCase()) >= 0;
-        }
+        },
+        separator: ",",
+        tokenSeparators: [],
+        tokenizer: defaultTokenizer
     };
 
     // exports

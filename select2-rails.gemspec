@@ -18,5 +18,5 @@ Gem::Specification.new do |s|
   s.add_dependency "thor", "~> 0.14"
   s.add_development_dependency "bundler", "~> 1.0"
   s.add_development_dependency "rails", "~> 3.0"
-  s.add_development_dependency "sass", "~> 3.1"
+  s.add_development_dependency "httpclient", "~> 2.2"
 end

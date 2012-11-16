@@ -32,7 +32,7 @@ The last number of the version is the patch version specific to the gem. For exa
 
 ## Contributions
 
-If you wont to contribute, please:
+If you want to contribute, please:
 
 	* Fork the project.
 	* Make your feature addition or bug fix.

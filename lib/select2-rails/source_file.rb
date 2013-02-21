@@ -12,7 +12,7 @@ class SourceFile < Thor
     self.destination_root = "app/assets"
     remote = "https://github.com/ivaynberg/select2"
     get "#{remote}/raw/#{tag}/select2.png", "images/select2.png"
-    get "#{remote}/raw/#{tag}/spinner.gif", "images/spinner.gif"
+    get "#{remote}/raw/#{tag}/select2-spinner.gif", "images/select2-spinner.gif"
     get "#{remote}/raw/#{tag}/select2.css", "stylesheets/select2.css"
     get "#{remote}/raw/#{tag}/select2.js", "javascripts/select2.js"
   end
@@ -22,7 +22,7 @@ class SourceFile < Thor
     self.destination_root = "app/assets"
     inside destination_root do
       run("cp stylesheets/select2.css stylesheets/select2.css.scss")
-      gsub_file 'stylesheets/select2.css.scss', '(spinner.gif)', "('spinner.gif')"
+      gsub_file 'stylesheets/select2.css.scss', '(select2-spinner.gif)', "('select2-spinner.gif')"
       gsub_file 'stylesheets/select2.css.scss', '(select2.png)', "('select2.png')"
       gsub_file 'stylesheets/select2.css.scss', ' url', ' image-url'
     end

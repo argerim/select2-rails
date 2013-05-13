@@ -1940,7 +1940,8 @@ the specific language governing permissions and limitations under the Apache Lic
             if (!options || !options.noFocus)
                 this.selection.focus();
 
-            if (!equal(old, this.id(data))) { this.triggerChange(); }
+            //trigger change even on same selection to display correctly with best_in_place
+            this.triggerChange();
         },
 
         // single

@@ -1928,7 +1928,6 @@ the specific language governing permissions and limitations under the Apache Lic
 
         // single
         onSelect: function (data, options) {
-            var old = this.opts.element.val();
 
             this.opts.element.val(this.id(data));
             this.updateSelection(data);

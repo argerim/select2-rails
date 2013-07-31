@@ -9,7 +9,7 @@ class SourceFile < Thor
   def fetch
     filtered_tags = fetch_tags
     tag = select("Which tag do you want to fetch?", filtered_tags)
-    self.destination_root = "app/assets"
+    self.destination_root = "vendor/assets"
     remote = "https://github.com/ivaynberg/select2"
     get "#{remote}/raw/#{tag}/select2.png", "images/select2.png"
     get "#{remote}/raw/#{tag}/select2-spinner.gif", "images/select2-spinner.gif"
@@ -19,7 +19,7 @@ class SourceFile < Thor
 
   desc "convert css to scss file", "convert css to scss file"
   def convert
-    self.destination_root = "app/assets"
+    self.destination_root = "vendor/assets"
     inside destination_root do
       run("cp stylesheets/select2.css stylesheets/select2.css.scss")
       gsub_file 'stylesheets/select2.css.scss', '(select2-spinner.gif)', "('select2-spinner.gif')"
@@ -30,7 +30,7 @@ class SourceFile < Thor
 
   desc "clean up useless files", "clean up useless files"
   def cleanup
-    self.destination_root = "app/assets"
+    self.destination_root = "vendor/assets"
     remove_file "stylesheets/select2.css"
   end
   private

@@ -15,6 +15,9 @@ class SourceFile < Thor
     get "#{remote}/raw/#{tag}/select2-spinner.gif", "images/select2-spinner.gif"
     get "#{remote}/raw/#{tag}/select2.css", "stylesheets/select2.css"
     get "#{remote}/raw/#{tag}/select2.js", "javascripts/select2.js"
+    languages.each do |lang|
+      get "#{remote}/raw/#{tag}/select2_locale_#{lang}.js", "javascripts/select2_locale_#{lang}.js"
+    end
   end
 
   desc "convert css to scss file", "convert css to scss file"
@@ -37,7 +40,13 @@ class SourceFile < Thor
   def fetch_tags
     http = HTTPClient.new
     response = JSON.parse(http.get("https://api.github.com/repos/ivaynberg/select2/tags").body)
-    response.map{|tag| tag["name"]}.sort
+    response.map{|tag| tag["name"]}.sort    
+  end
+  def languages
+    [ "ar", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fi", "fr", "gl", "he", "hr", 
+      "hu", "id", "is", "it", "ja", "ko", "lt", "lv", "mk", "nl", "no", "pl", "pt-BR", 
+      "pt-PT", "ro", "ru", "sk", "sv", "tr", "ua", "vi", "zh-CN", "zh-TW"
+    ].sort   
   end
   def select msg, elements
     elements.each_with_index do |element, index|

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/argerim/select2-rails"
   s.summary     = %q{Integrate Select2 javascript library with Rails asset pipeline}
   s.description = %q{Select2 is a jQuery based replacement for select boxes. It supports searching, remote data sets, and infinite scrolling of results. This gem integrates Select2 with Rails asset pipeline for easy of use.}
-
+  s.license     = 'MIT'
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }

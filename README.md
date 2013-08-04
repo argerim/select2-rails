@@ -51,6 +51,6 @@ If you want to contribute, please:
 	* Make your feature addition or bug fix.
 	* Send me a pull request on Github.
 
-## Copyright
+## License
 
-Copyright (c) 2012 Rogerio Medeiros. See [LICENSE](https://github.com/argerim/select2-rails/blob/master/LICENSE) for details.
+Selec2-Rails is released under the [MIT License](http://www.opensource.org/licenses/MIT).

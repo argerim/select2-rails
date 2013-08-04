@@ -26,6 +26,17 @@ Add to your `app/assets/stylesheets/application.css`:
 
 	*= require select2
 
+## Internationalization (i18n)
+
+The `select2-rails` now supports multiple languages.
+Add the following to your `app/assets/javascripts/application.js`:
+  //= require select2_locale_"any possible language"
+
+Possible languages:
+  ar, ca, cs, da, de, el, es, et, eu, fi, fr, gl, he, hr, 
+  hu, id, is, it, ja, ko, lt, lv, mk, nl, no, pl, pt-BR, 
+  pt-PT, ro, ru, sk, sv, tr, ua, vi, zh-CN, zh-TW
+
 ## Version
 From `v2.1.0` on, `select2-rails`'s version will match the version of `Select2` it uses.
 

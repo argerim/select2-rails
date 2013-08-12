@@ -45,9 +45,9 @@ class SourceFile < Thor
     response.map{|tag| tag["name"]}.sort    
   end
   def languages
-    [ "ar", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fi", "fr", "gl", "he", "hr", 
+    [ "ar", "bg", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fa", "fi", "fr", "gl", "he", "hr", 
       "hu", "id", "is", "it", "ja", "ko", "lt", "lv", "mk", "nl", "no", "pl", "pt-BR", 
-      "pt-PT", "ro", "ru", "sk", "sv", "tr", "ua", "vi", "zh-CN", "zh-TW"
+      "pt-PT", "ro", "ru", "sk", "sv", "th", "tr", "ua", "vi", "zh-CN", "zh-TW"
     ].sort   
   end
   def select msg, elements

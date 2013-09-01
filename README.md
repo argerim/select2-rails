@@ -38,6 +38,10 @@ Possible languages:
 
 	ar, ca, cs, da, de, el, es, et, eu, fi, fr, gl, he, hr, hu, id, is, it, ja, ko, lt, lv, mk, nl, no, pl, pt-BR, pt-PT, ro, ru, sk, sv, tr, ua, vi, zh-CN, zh-TW
 
+## Example
+[Code](https://github.com/argerim/select_2_example)
+[Heroku app](http://select-2-example.herokuapp.com/)
+
 ## Version
 From `v2.1.0` on, `select2-rails`'s version will match the version of `Select2` it uses.
 

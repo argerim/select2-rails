@@ -42,13 +42,13 @@ class SourceFile < Thor
   def fetch_tags
     http = HTTPClient.new
     response = JSON.parse(http.get("https://api.github.com/repos/ivaynberg/select2/tags").body)
-    response.map{|tag| tag["name"]}.sort    
+    response.map{|tag| tag["name"]}.sort
   end
   def languages
-    [ "ar", "bg", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fa", "fi", "fr", "gl", "he", "hr", 
-      "hu", "id", "is", "it", "ja", "ko", "lt", "lv", "mk", "nl", "no", "pl", "pt-BR", 
+    [ "ar", "bg", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fa", "fi", "fr", "gl", "he", "hr",
+      "hu", "id", "is", "it", "ja", "ko", "lt", "lv", "mk", "ms", "nl", "no", "pl", "pt-BR",
       "pt-PT", "ro", "ru", "sk", "sv", "th", "tr", "ua", "vi", "zh-CN", "zh-TW"
-    ].sort   
+    ].sort
   end
   def select msg, elements
     elements.each_with_index do |element, index|

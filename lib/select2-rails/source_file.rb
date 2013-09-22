@@ -21,15 +21,12 @@ class SourceFile < Thor
     end
   end
 
-  desc "convert css to scss file", "convert css to scss file"
+  desc "convert css to css.erb file", "make css preprocess with erb"
   def convert
     self.destination_root = "app/assets"
     inside destination_root do
-      run("cp stylesheets/select2.css stylesheets/select2.css.scss")
-      gsub_file 'stylesheets/select2.css.scss', '(select2-spinner.gif)', "('select2-spinner.gif')"
-      gsub_file 'stylesheets/select2.css.scss', '(select2.png)', "('select2.png')"
-      gsub_file 'stylesheets/select2.css.scss', '(select2x2.png)', "('select2x2.png')"
-      gsub_file 'stylesheets/select2.css.scss', ' url', ' image-url'
+      run("cp stylesheets/select2.css stylesheets/select2.css.erb")
+      gsub_file 'stylesheets/select2.css.erb', %r/url\(([^\)]*)\)/, 'url(<%= asset_path(\1) %>)'
     end
   end
 

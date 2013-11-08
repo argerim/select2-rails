@@ -43,6 +43,15 @@ Code [here](https://github.com/argerim/select_2_example)
 
 Heroku app [here](http://select-2-example.herokuapp.com/)
 
+## Fix
+### IE8 Invalid Character
+IE8 doesn't support some unescaped Unicode character and need to quote keys in object literals
+You need some configurations for [Uglifier](https://github.com/lautis/uglifier) to do the work.
+Add to your `config/environments/production.rb`
+
+       require 'uglifier'
+       config.assets.js_compressor = Uglifier.new(output: {ascii_only: true, quote_keys: true})
+
 ## Version
 From `v2.1.0` on, `select2-rails`'s version will match the version of `Select2` it uses.
 

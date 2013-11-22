@@ -1,7 +1,7 @@
 /*
 Copyright 2012 Igor Vaynberg
 
-Version: 3.4.4 Timestamp: Thu Oct 24 13:23:11 PDT 2013
+Version: 3.4.5 Timestamp: Mon Nov  4 08:22:42 PST 2013
 
 This software is licensed under the Apache License, Version 2.0 (the "Apache License") or the GNU
 General Public License version 2 (the "GPL License"). You may choose either license to govern your
@@ -2443,6 +2443,7 @@ the specific language governing permissions and limitations under the Apache Lic
             return opts;
         },
 
+        // multi
         selectChoice: function (choice) {
 
             var selected = this.container.find(".select2-search-choice-focus");
@@ -2859,7 +2860,6 @@ the specific language governing permissions and limitations under the Apache Lic
             var val = this.getVal(),
                 data,
                 index;
-
             selected = selected.closest(".select2-search-choice");
 
             if (selected.length === 0) {
@@ -2888,6 +2888,8 @@ the specific language governing permissions and limitations under the Apache Lic
             if (evt.isDefaultPrevented()) {
                 return;
             }
+
+            selected.remove();
 
             this.opts.element.trigger({ type: "select2-removed", val: this.id(data), choice: data });
             this.triggerChange({ removed: data });
@@ -3003,7 +3005,9 @@ the specific language governing permissions and limitations under the Apache Lic
                 for (var j = 0; j < old.length; j++) {
                     if (equal(this.opts.id(current[i]), this.opts.id(old[j]))) {
                         current.splice(i, 1);
-                        i--;
+                        if(i>0){
+                        	i--;
+                        }
                         old.splice(j, 1);
                         j--;
                     }

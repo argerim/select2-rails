@@ -26,6 +26,10 @@ Add to your `app/assets/stylesheets/application.css`:
 
 	*= require select2
 
+If you are using Twitter Boostrap you can require ethe bootstrap theme CSS
+
+  *= require select2-bootstrap
+
 ## Internationalization (i18n)
 
 The `select2-rails` now supports multiple languages.

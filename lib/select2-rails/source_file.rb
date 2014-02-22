@@ -26,16 +26,21 @@ class SourceFile < Thor
     self.destination_root = "app/assets"
     inside destination_root do
       run("cp stylesheets/select2.css stylesheets/select2.css.erb")
+      build_image_dependencies
       gsub_file 'stylesheets/select2.css.erb', %r/url\(([^\)]*)\)/, 'url(<%= asset_path(\1) %>)'
     end
   end
+
+
 
   desc "clean up useless files", "clean up useless files"
   def cleanup
     self.destination_root = "app/assets"
     remove_file "stylesheets/select2.css"
   end
+  
   private
+
   def fetch_tags
     http = HTTPClient.new
     response = JSON.parse(http.get("https://api.github.com/repos/ivaynberg/select2/tags").body)
@@ -54,4 +59,19 @@ class SourceFile < Thor
     result = ask(msg).to_i
     elements[result - 1]
   end
+
+  def build_image_dependencies
+    f = File.open("stylesheets/select2.css.erb", "r+")
+    lines = f.readlines
+    f.close
+    lines = ["//= depend_on_asset \"select2.png\"\n"] + 
+            ["//= depend_on_asset \"select2-spinner.gif\"\n"] + 
+            ["//= depend_on_asset \"select2x2.png\"\n"] + 
+            lines
+
+    output = File.new("stylesheets/select2.css.erb", "w")
+    lines.each { |line| output.write line }
+    output.close
+  end
+
 end

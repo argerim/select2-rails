@@ -15,6 +15,7 @@ class SourceFile < Thor
     get "#{remote}/raw/#{tag}/select2x2.png", "images/select2x2.png"
     get "#{remote}/raw/#{tag}/select2-spinner.gif", "images/select2-spinner.gif"
     get "#{remote}/raw/#{tag}/select2.css", "stylesheets/select2.css"
+    get "#{remote}/raw/#{tag}/select2-bootstrap.css", "stylesheets/select2-bootstrap.css"
     get "#{remote}/raw/#{tag}/select2.js", "javascripts/select2.js"
     languages.each do |lang|
       get "#{remote}/raw/#{tag}/select2_locale_#{lang}.js", "javascripts/select2_locale_#{lang}.js"

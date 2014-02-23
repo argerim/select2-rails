@@ -28,7 +28,7 @@ Add to your `app/assets/stylesheets/application.css`:
 
 If you are using Twitter Boostrap you can require ethe bootstrap theme CSS
 
-  *= require select2-bootstrap
+	*= require select2-bootstrap
 
 ## Internationalization (i18n)
 

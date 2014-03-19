@@ -26,7 +26,7 @@ Add to your `app/assets/stylesheets/application.css`:
 
 	*= require select2
 
-If you are using Twitter Boostrap you can require the bootstrap theme CSS
+If you are using Twitter Boostrap you need to also require the bootstrap theme CSS in addition to the above require.
 
 	*= require select2-bootstrap
 

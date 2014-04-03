@@ -37,7 +37,7 @@ class SourceFile < Thor
     self.destination_root = "app/assets"
     remove_file "stylesheets/select2.css"
   end
-  
+
   private
 
   def fetch_tags
@@ -48,7 +48,7 @@ class SourceFile < Thor
   def languages
     [ "ar", "bg", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fa", "fi", "fr", "gl", "he", "hr",
       "hu", "id", "is", "it", "ja", "ko", "lt", "lv", "mk", "ms", "nl", "no", "pl", "pt-BR",
-      "pt-PT", "ro", "ru", "sk", "sv", "th", "tr", "ua", "vi", "zh-CN", "zh-TW"
+      "pt-PT", "ro", "ru", "sk", "sv", "th", "tr", "uk", "vi", "zh-CN", "zh-TW"
     ].sort
   end
   def select msg, elements
@@ -63,9 +63,9 @@ class SourceFile < Thor
     f = File.open("stylesheets/select2.css.erb", "r+")
     lines = f.readlines
     f.close
-    lines = ["//= depend_on_asset \"select2.png\"\n"] + 
-            ["//= depend_on_asset \"select2-spinner.gif\"\n"] + 
-            ["//= depend_on_asset \"select2x2.png\"\n"] + 
+    lines = ["//= depend_on_asset \"select2.png\"\n"] +
+            ["//= depend_on_asset \"select2-spinner.gif\"\n"] +
+            ["//= depend_on_asset \"select2x2.png\"\n"] +
             lines
 
     output = File.new("stylesheets/select2.css.erb", "w")

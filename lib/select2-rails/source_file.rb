@@ -47,7 +47,7 @@ class SourceFile < Thor
   end
   def languages
     [ "ar", "bg", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fa", "fi", "fr", "gl", "he", "hr",
-      "hu", "id", "is", "it", "ja", "ko", "lt", "lv", "mk", "ms", "nl", "no", "pl", "pt-BR",
+      "hu", "id", "is", "it", "ja", "ka", "ko", "lt", "lv", "mk", "ms", "nl", "no", "pl", "pt-BR",
       "pt-PT", "ro", "rs", "ru", "sk", "sv", "th", "tr", "uk", "vi", "zh-CN", "zh-TW"
     ].sort
   end

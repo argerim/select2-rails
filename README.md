@@ -40,7 +40,7 @@ Add the following to your `app/assets/javascripts/application.js`:
 
 Possible languages:
 
-	ar, ca, cs, da, de, el, es, et, eu, fi, fr, gl, he, hr, hu, id, is, it, ja, ko, lt, lv, mk, ms, nl, no, pl, pt-BR, pt-PT, ro, rs, ru, sk, sv, tr, uk, vi, zh-CN, zh-TW
+	ar, ca, cs, da, de, el, es, et, eu, fi, fr, gl, he, hr, hu, id, is, it, ja, ka, ko, lt, lv, mk, ms, nl, no, pl, pt-BR, pt-PT, ro, rs, ru, sk, sv, tr, uk, vi, zh-CN, zh-TW
 
 ## Example
 Code [here](https://github.com/argerim/select_2_example)

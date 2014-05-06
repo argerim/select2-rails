@@ -41,7 +41,7 @@ class SourceFile < Thor
   private
 
   def fetch_tags
-    http = HTTPClient.new
+    http = HTTPClient.new(agent_name: 'chilian/select2-rails')
     response = JSON.parse(http.get("https://api.github.com/repos/ivaynberg/select2/tags").body)
     response.map{|tag| tag["name"]}.sort
   end

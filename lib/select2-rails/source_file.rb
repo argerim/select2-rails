@@ -6,6 +6,7 @@ class SourceFile < Thor
   include Thor::Actions
 
   desc "fetch source files", "fetch source files from GitHub"
+  option :force, type: :boolean, default: false, aliases: :f
   def fetch
     filtered_tags = fetch_tags
     tag = select("Which tag do you want to fetch?", filtered_tags)
@@ -18,7 +19,11 @@ class SourceFile < Thor
     get "#{remote}/raw/#{tag}/select2-bootstrap.css", "stylesheets/select2-bootstrap.css"
     get "#{remote}/raw/#{tag}/select2.js", "javascripts/select2.js"
     languages.each do |lang|
-      get "#{remote}/raw/#{tag}/select2_locale_#{lang}.js", "javascripts/select2_locale_#{lang}.js"
+      get(
+        "#{remote}/raw/#{tag}/select2_locale_#{lang}.js",
+        "javascripts/select2_locale_#{lang}.js",
+        force: options[:force]
+      )
     end
   end
 

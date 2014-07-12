@@ -22,7 +22,7 @@ Add the following to your `app/assets/javascripts/application.js`:
 
 ### Include select2-rails stylesheet assets
 
-Add to your `app/assets/stylesheets/application.css`:
+Add to your `app/assets/stylesheets/application.css.scss`:
 
 	*= require select2
 

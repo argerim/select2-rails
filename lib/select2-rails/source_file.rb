@@ -9,7 +9,7 @@ class SourceFile < Thor
   def fetch
     filtered_tags = fetch_tags
     tag = select("Which tag do you want to fetch?", filtered_tags)
-    self.destination_root = "app/assets"
+    self.destination_root = "vendor/assets"
     remote = "https://github.com/ivaynberg/select2"
     get "#{remote}/raw/#{tag}/select2.png", "images/select2.png"
     get "#{remote}/raw/#{tag}/select2x2.png", "images/select2x2.png"
@@ -24,7 +24,7 @@ class SourceFile < Thor
 
   desc "convert css to css.erb file", "make css preprocess with erb"
   def convert
-    self.destination_root = "app/assets"
+    self.destination_root = "vendor/assets"
     inside destination_root do
       run("cp stylesheets/select2.css stylesheets/select2.css.erb")
       build_image_dependencies
@@ -34,10 +34,10 @@ class SourceFile < Thor
 
   desc "clean up useless files", "clean up useless files"
   def cleanup
-    self.destination_root = "app/assets"
+    self.destination_root = "vendor/assets"
     remove_file "stylesheets/select2.css"
   end
-  
+
   private
 
   def fetch_tags
@@ -63,9 +63,9 @@ class SourceFile < Thor
     f = File.open("stylesheets/select2.css.erb", "r+")
     lines = f.readlines
     f.close
-    lines = ["//= depend_on_asset \"select2.png\"\n"] + 
-            ["//= depend_on_asset \"select2-spinner.gif\"\n"] + 
-            ["//= depend_on_asset \"select2x2.png\"\n"] + 
+    lines = ["//= depend_on_asset \"select2.png\"\n"] +
+            ["//= depend_on_asset \"select2-spinner.gif\"\n"] +
+            ["//= depend_on_asset \"select2x2.png\"\n"] +
             lines
 
     output = File.new("stylesheets/select2.css.erb", "w")

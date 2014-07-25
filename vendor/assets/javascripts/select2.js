@@ -1,7 +1,7 @@
 /*
 Copyright 2012 Igor Vaynberg
 
-Version: 3.5.0 Timestamp: Mon Jun 16 19:29:44 EDT 2014
+Version: 3.5.1
 
 This software is licensed under the Apache License, Version 2.0 (the "Apache License") or the GNU
 General Public License version 2 (the "GPL License"). You may choose either license to govern your
@@ -444,6 +444,16 @@ the specific language governing permissions and limitations under the Apache Lic
                         // added query as third paramter to keep backwards compatibility
                         var results = options.results(data, query.page, query);
                         query.callback(results);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        var results = {
+                            hasError: true,
+                            jqXHR: jqXHR,
+                            textStatus: textStatus,
+                            errorThrown: errorThrown,
+                        };
+
+                        query.callback(results);
                     }
                 });
                 handler = transport.call(self, params);
@@ -836,13 +846,13 @@ the specific language governing permissions and limitations under the Apache Lic
 
         // abstract
         destroy: function () {
-            var element=this.opts.element, select2 = element.data("select2");
+            var element=this.opts.element, select2 = element.data("select2"), self = this;
 
             this.close();
 
             if (element.length && element[0].detachEvent) {
                 element.each(function () {
-                    this.detachEvent("onpropertychange", this._sync);
+                    this.detachEvent("onpropertychange", self._sync);
                 });
             }
             if (this.propertyObserver) {
@@ -1027,7 +1037,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
                     query.callback(data);
                 });
-                // this is needed because inside val() we construct choices from options and there id is hardcoded
+                // this is needed because inside val() we construct choices from options and their id is hardcoded
                 opts.id=function(e) { return e.id; };
             } else {
                 if (!("query" in opts)) {
@@ -1766,6 +1776,12 @@ the specific language governing permissions and limitations under the Apache Lic
                     return;
                 }
 
+                // handle ajax error
+                if(data.hasError !== undefined && checkFormatter(opts.formatAjaxError, "formatAjaxError")) {
+                    render("<li class='select2-ajax-error'>" + evaluate(opts.formatAjaxError, opts.element, data.jqXHR, data.textStatus, data.errorThrown) + "</li>");
+                    return;
+                }
+
                 // save context, if any
                 this.context = (data.context===undefined) ? null : data.context;
                 // create a default choice and prepend it to the list
@@ -2100,6 +2116,9 @@ the specific language governing permissions and limitations under the Apache Lic
 
             this.search.on("keydown", this.bind(function (e) {
                 if (!this.isInterfaceEnabled()) return;
+
+                // filter 229 keyCodes (input method editor is processing key input)
+                if (229 == e.keyCode) return;
 
                 if (e.which === KEY.PAGE_UP || e.which === KEY.PAGE_DOWN) {
                     // prevent the page from scrolling
@@ -2953,7 +2972,7 @@ the specific language governing permissions and limitations under the Apache Lic
         // multi
         onSelect: function (data, options) {
 
-            if (!this.triggerSelect(data)) { return; }
+            if (!this.triggerSelect(data) || data.text === "") { return; }
 
             this.addSelectedChoice(data);
 
@@ -3406,13 +3425,6 @@ the specific language governing permissions and limitations under the Apache Lic
         },
         formatResultCssClass: function(data) {return data.css;},
         formatSelectionCssClass: function(data, container) {return undefined;},
-        formatMatches: function (matches) { if (matches === 1) { return "One result is available, press enter to select it."; } return matches + " results are available, use up and down arrow keys to navigate."; },
-        formatNoMatches: function () { return "No matches found"; },
-        formatInputTooShort: function (input, min) { var n = min - input.length; return "Please enter " + n + " or more character" + (n == 1? "" : "s"); },
-        formatInputTooLong: function (input, max) { var n = input.length - max; return "Please delete " + n + " character" + (n == 1? "" : "s"); },
-        formatSelectionTooBig: function (limit) { return "You can only select " + limit + " item" + (limit == 1 ? "" : "s"); },
-        formatLoadMore: function (pageNumber) { return "Loading more results…"; },
-        formatSearching: function () { return "Searching…"; },
         minimumResultsForSearch: 0,
         minimumInputLength: 0,
         maximumInputLength: null,
@@ -3450,6 +3462,21 @@ the specific language governing permissions and limitations under the Apache Lic
             return true;
         }
     };
+
+    $.fn.select2.locales = [];
+
+    $.fn.select2.locales['en'] = {
+         formatMatches: function (matches) { if (matches === 1) { return "One result is available, press enter to select it."; } return matches + " results are available, use up and down arrow keys to navigate."; },
+         formatNoMatches: function () { return "No matches found"; },
+         formatAjaxError: function (jqXHR, textStatus, errorThrown) { return "Loading failed"; },
+         formatInputTooShort: function (input, min) { var n = min - input.length; return "Please enter " + n + " or more character" + (n == 1 ? "" : "s"); },
+         formatInputTooLong: function (input, max) { var n = input.length - max; return "Please delete " + n + " character" + (n == 1 ? "" : "s"); },
+         formatSelectionTooBig: function (limit) { return "You can only select " + limit + " item" + (limit == 1 ? "" : "s"); },
+         formatLoadMore: function (pageNumber) { return "Loading more results…"; },
+         formatSearching: function () { return "Searching…"; },
+    };
+
+    $.extend($.fn.select2.defaults, $.fn.select2.locales['en']);
 
     $.fn.select2.ajaxDefaults = {
         transport: $.ajax,

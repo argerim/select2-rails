@@ -26,9 +26,8 @@ class SourceFile < Thor
   def convert
     self.destination_root = "vendor/assets"
     inside destination_root do
-      run("cp stylesheets/select2.css stylesheets/select2.css.erb")
-      build_image_dependencies
-      gsub_file 'stylesheets/select2.css.erb', %r/url\(([^\)]*)\)/, 'url(<%= asset_path(\1) %>)'
+      run("cp stylesheets/select2.css stylesheets/select2.css.scss")
+      gsub_file 'stylesheets/select2.css.scss', %r/url\(([^\)]*)\)/, 'image-url(\1)'
     end
   end
 
@@ -45,32 +44,20 @@ class SourceFile < Thor
     response = JSON.parse(http.get("https://api.github.com/repos/ivaynberg/select2/tags").body)
     response.map{|tag| tag["name"]}.sort
   end
+
   def languages
     [ "ar", "bg", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fa", "fi", "fr", "gl", "he", "hr",
       "hu", "id", "is", "it", "ja", "ka", "ko", "lt", "lv", "mk", "ms", "nl", "no", "pl", "pt-BR",
       "pt-PT", "ro", "rs", "ru", "sk", "sv", "th", "tr", "uk", "vi", "zh-CN", "zh-TW"
     ].sort
   end
+
   def select msg, elements
     elements.each_with_index do |element, index|
       say(block_given? ? yield(element, index + 1) : ("#{index + 1}. #{element.to_s}"))
     end
     result = ask(msg).to_i
     elements[result - 1]
-  end
-
-  def build_image_dependencies
-    f = File.open("stylesheets/select2.css.erb", "r+")
-    lines = f.readlines
-    f.close
-    lines = ["//= depend_on_asset \"select2.png\"\n"] +
-            ["//= depend_on_asset \"select2-spinner.gif\"\n"] +
-            ["//= depend_on_asset \"select2x2.png\"\n"] +
-            lines
-
-    output = File.new("stylesheets/select2.css.erb", "w")
-    lines.each { |line| output.write line }
-    output.close
   end
 
 end

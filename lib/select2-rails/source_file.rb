@@ -14,7 +14,7 @@ class SourceFile < Thor
     get "#{remote}/raw/#{tag}/select2.png", "images/select2.png"
     get "#{remote}/raw/#{tag}/select2x2.png", "images/select2x2.png"
     get "#{remote}/raw/#{tag}/select2-spinner.gif", "images/select2-spinner.gif"
-    get "#{remote}/raw/#{tag}/select2.css", "stylesheets/select2.css"
+    get "#{remote}/raw/#{tag}/select2.css", "stylesheets/select2.scss"
     get "#{remote}/raw/#{tag}/select2-bootstrap.css", "stylesheets/select2-bootstrap.css"
     get "#{remote}/raw/#{tag}/select2.js", "javascripts/select2.js"
     languages.each do |lang|
@@ -26,7 +26,7 @@ class SourceFile < Thor
   def convert
     self.destination_root = "vendor/assets"
     inside destination_root do
-      gsub_file 'stylesheets/select2.css', %r/url\(([^\)]*)\)/, 'image-url(\1)'
+      gsub_file 'stylesheets/select2.scss', %r/url\(([^\)]*)\)/, 'image-url(\1)'
     end
   end
 

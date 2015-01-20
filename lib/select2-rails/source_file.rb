@@ -10,7 +10,7 @@ class SourceFile < Thor
     filtered_tags = fetch_tags
     tag = select("Which tag do you want to fetch?", filtered_tags)
     self.destination_root = "vendor/assets"
-    remote = "https://github.com/ivaynberg/select2"
+    remote = "https://github.com/select2/select2"
     get "#{remote}/raw/#{tag}/select2.png", "images/select2.png"
     get "#{remote}/raw/#{tag}/select2x2.png", "images/select2x2.png"
     get "#{remote}/raw/#{tag}/select2-spinner.gif", "images/select2-spinner.gif"
@@ -34,14 +34,15 @@ class SourceFile < Thor
 
   def fetch_tags
     http = HTTPClient.new
-    response = JSON.parse(http.get("https://api.github.com/repos/ivaynberg/select2/tags").body)
+    #http.ssl_config.ssl_version = :SSLv23
+    response = JSON.parse(http.get("https://api.github.com/repos/select2/select2/tags").body)
     response.map{|tag| tag["name"]}.sort
   end
 
   def languages
-    [ "ar", "bg", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fa", "fi", "fr", "gl", "he", "hr",
-      "hu", "id", "is", "it", "ja", "ka", "ko", "lt", "lv", "mk", "ms", "nl", "no", "pl", "pt-BR",
-      "pt-PT", "ro", "rs", "ru", "sk", "sv", "th", "tr", "uk", "vi", "zh-CN", "zh-TW"
+    [ "ar", "az", "bg", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fa", "fi", "fr", "gl", "he", "hr",
+      "hu", "id", "is", "it", "ja", "ka", "ko", "lt", "lv", "mk", "ms", "nb", "nl", "pl", "pt-BR",
+      "pt-PT", "ro", "rs", "ru", "sk", "sv", "th", "tr", "ug-CN", "uk", "vi", "zh-CN", "zh-TW"
     ].sort
   end
 

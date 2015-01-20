@@ -7,5 +7,4 @@ task "update-select2" do
   files = SourceFile.new
   files.fetch
   files.convert
-  files.cleanup
 end

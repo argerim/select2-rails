@@ -1,16 +1,1 @@
-/**
- * Select2 Chinese translation
- */
-(function ($) {
-    "use strict";
-    $.fn.select2.locales['zh-CN'] = {
-        formatNoMatches: function () { return "没有找到匹配项"; },
-        formatInputTooShort: function (input, min) { var n = min - input.length; return "请再输入" + n + "个字符";},
-        formatInputTooLong: function (input, max) { var n = input.length - max; return "请删掉" + n + "个字符";},
-        formatSelectionTooBig: function (limit) { return "你只能选择最多" + limit + "项"; },
-        formatLoadMore: function (pageNumber) { return "加载结果中…"; },
-        formatSearching: function () { return "搜索中…"; }
-    };
-
-    $.extend($.fn.select2.defaults, $.fn.select2.locales['zh-CN']);
-})(jQuery);
+(function(){if(window.define)var e=window.define;if(window.require)var t=window.require;if(window.jQuery&&jQuery.fn&&jQuery.fn.select2&&jQuery.fn.select2.amd)var e=jQuery.fn.select2.amd.define,t=jQuery.fn.select2.amd.require;e("select2/i18n/zh-CN",[],function(){return{errorLoading:function(){return"无法载入结果。"},inputTooLong:function(e){var t=e.input.length-e.maximum,n="请删除"+t+"个字符";return n},inputTooShort:function(e){var t=e.minimum-e.input.length,n="请再输入至少"+t+"个字符";return n},loadingMore:function(){return"载入更多结果…"},maximumSelected:function(e){var t="最多只能选择"+e.maximum+"个项目";return t},noResults:function(){return"未找到结果"},searching:function(){return"搜索中…"}}}),t("jquery.select2"),jQuery.fn.select2.amd={define:e,require:t}})();

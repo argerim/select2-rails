@@ -1,18 +1,1 @@
-/**
- * Select2 German translation
- */
-(function ($) {
-    "use strict";
-
-    $.fn.select2.locales['de'] = {
-        formatNoMatches: function () { return "Keine Übereinstimmungen gefunden"; },
-        formatInputTooShort: function (input, min) { var n = min - input.length; return "Bitte " + n + " Zeichen mehr eingeben"; },
-        formatInputTooLong: function (input, max) { var n = input.length - max; return "Bitte " + n + " Zeichen weniger eingeben"; },
-        formatSelectionTooBig: function (limit) { return "Sie können nur " + limit + " Eintr" + (limit === 1 ? "ag" : "äge") + " auswählen"; },
-        formatLoadMore: function (pageNumber) { return "Lade mehr Ergebnisse…"; },
-        formatSearching: function () { return "Suche…"; },
-        formatMatches: function (matches) { return matches + " Ergebnis " + (matches > 1 ? "se" : "") + " verfügbar, zum Navigieren die Hoch-/Runter-Pfeiltasten verwenden."; }
-    };
-
-    $.extend($.fn.select2.defaults, $.fn.select2.locales['de']);
-})(jQuery);
+(function(){if(window.define)var e=window.define;if(window.require)var t=window.require;if(window.jQuery&&jQuery.fn&&jQuery.fn.select2&&jQuery.fn.select2.amd)var e=jQuery.fn.select2.amd.define,t=jQuery.fn.select2.amd.require;e("select2/i18n/de",[],function(){return{inputTooLong:function(e){var t=e.input.length-e.maximum;return"Bitte "+t+" Zeichen weniger eingeben"},inputTooShort:function(e){var t=e.minimum-e.input.length;return"Bitte "+t+" Zeichen mehr eingeben"},loadingMore:function(){return"Lade mehr Ergebnisse…"},maximumSelected:function(e){var t="Sie können nur "+e.maximum+" Eintr";return e.maximum===1?t+="ag":t+="äge",t+=" auswählen",t},noResults:function(){return"Keine Übereinstimmungen gefunden"},searching:function(){return"Suche…"}}}),t("jquery.select2"),jQuery.fn.select2.amd={define:e,require:t}})();

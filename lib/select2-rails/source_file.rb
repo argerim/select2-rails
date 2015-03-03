@@ -11,22 +11,10 @@ class SourceFile < Thor
     tag = select("Which tag do you want to fetch?", filtered_tags)
     self.destination_root = "vendor/assets"
     remote = "https://github.com/select2/select2"
-    get "#{remote}/raw/#{tag}/select2.png", "images/select2.png"
-    get "#{remote}/raw/#{tag}/select2x2.png", "images/select2x2.png"
-    get "#{remote}/raw/#{tag}/select2-spinner.gif", "images/select2-spinner.gif"
-    get "#{remote}/raw/#{tag}/select2.css", "stylesheets/select2.scss"
-    get "#{remote}/raw/#{tag}/select2-bootstrap.css", "stylesheets/select2-bootstrap.css"
-    get "#{remote}/raw/#{tag}/select2.js", "javascripts/select2.js"
+    get "#{remote}/raw/#{tag}/dist/css/select2.css", "stylesheets/select2.css"
+    get "#{remote}/raw/#{tag}/dist/js/select2.js", "javascripts/select2.js"
     languages.each do |lang|
-      get "#{remote}/raw/#{tag}/select2_locale_#{lang}.js", "javascripts/select2_locale_#{lang}.js"
-    end
-  end
-
-  desc "convert css to use rails paths", "make css use rails paths"
-  def convert
-    self.destination_root = "vendor/assets"
-    inside destination_root do
-      gsub_file 'stylesheets/select2.scss', %r/url\(([^\)]*)\)/, 'image-url(\1)'
+      get "#{remote}/raw/#{tag}/dist/js/i18n/#{lang}.js", "javascripts/select2_locale_#{lang}.js"
     end
   end
 
@@ -34,15 +22,14 @@ class SourceFile < Thor
 
   def fetch_tags
     http = HTTPClient.new
-    #http.ssl_config.ssl_version = :SSLv23
     response = JSON.parse(http.get("https://api.github.com/repos/select2/select2/tags").body)
     response.map{|tag| tag["name"]}.sort
   end
 
   def languages
-    [ "ar", "az", "bg", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fa", "fi", "fr", "gl", "he", "hr",
-      "hu", "id", "is", "it", "ja", "ka", "ko", "lt", "lv", "mk", "ms", "nb", "nl", "pl", "pt-BR",
-      "pt-PT", "ro", "rs", "ru", "sk", "sv", "th", "tr", "ug-CN", "uk", "vi", "zh-CN", "zh-TW"
+    [ "az", "bg", "ca", "cs", "da", "de", "en", "es", "et", "eu", "fi", "fr", "gl", "hi", "hr", "hu",
+      "id", "is", "it", "lt", "lv", "mk", "nb", "nl", "pl", "pt-BR", "pt", "ro", "ru", "sk", "sr",
+      "sv", "th", "tr", "uk", "vi", "zh-CN", "zh-TW"
     ].sort
   end
 

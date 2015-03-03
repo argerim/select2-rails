@@ -1,17 +1,1 @@
-/**
- * Select2 Romanian translation.
- */
-(function ($) {
-    "use strict";
-
-    $.fn.select2.locales['ro'] = {
-        formatNoMatches: function () { return "Nu a fost găsit nimic"; },
-        formatInputTooShort: function (input, min) { var n = min - input.length; return "Vă rugăm să introduceți incă " + n + " caracter" + (n == 1 ? "" : "e"); },
-        formatInputTooLong: function (input, max) { var n = input.length - max; return "Vă rugăm să introduceți mai puțin de " + n + " caracter" + (n == 1? "" : "e"); },
-        formatSelectionTooBig: function (limit) { return "Aveți voie să selectați cel mult " + limit + " element" + (limit == 1 ? "" : "e"); },
-        formatLoadMore: function (pageNumber) { return "Se încarcă…"; },
-        formatSearching: function () { return "Căutare…"; }
-    };
-
-    $.extend($.fn.select2.defaults, $.fn.select2.locales['ro']);
-})(jQuery);
+(function(){if(window.define)var e=window.define;if(window.require)var t=window.require;if(window.jQuery&&jQuery.fn&&jQuery.fn.select2&&jQuery.fn.select2.amd)var e=jQuery.fn.select2.amd.define,t=jQuery.fn.select2.amd.require;e("select2/i18n/ro",[],function(){return{inputTooLong:function(e){var t=e.input.length-e.maximum,n="Vă rugăm să introduceți mai puțin de "+t;return n+=" caracter",n!==1&&(n+="e"),n},inputTooShort:function(e){var t=e.minimum-e.input.length,n="Vă rugăm să introduceți incă "+t;return n+=" caracter",n!==1&&(n+="e"),n},loadingMore:function(){return"Se încarcă…"},maximumSelection:function(e){var t="Aveți voie să selectați cel mult "+e.maximum;return t+=" element",t!==1&&(t+="e"),t},noResults:function(){return"Nu a fost găsit nimic"},searching:function(){return"Căutare…"}}}),t("jquery.select2"),jQuery.fn.select2.amd={define:e,require:t}})();

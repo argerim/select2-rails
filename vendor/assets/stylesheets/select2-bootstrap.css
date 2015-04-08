@@ -1,9 +1,4 @@
-/**
- * Select2 Bootstrap 3 CSS v1.4.1
- * Tested with Bootstrap v3.2.0 and Select2 v3.3.2, v3.4.1-v3.4.5, v3.5.1, master
- * in latest Chrome, Safari, Firefox, Opera (Mac) and IE8-IE11
- * MIT License
- */
+/*! Select2 Bootstrap 3 CSS v1.4.6 | MIT License | github.com/t0m/select2-bootstrap-css */
 /**
  * Reset Bootstrap 3 .form-control styles which - if applied to the
  * original <select>-element the Select2-plugin may be run against -
@@ -15,6 +10,7 @@
  */
 .select2-container.form-control {
   background: transparent;
+  box-shadow: none;
   border: none;
   display: block;
   /* 1 */
@@ -86,7 +82,7 @@
 .select2-container.input-lg .select2-choice,
 .input-group-lg .select2-container .select2-choice {
   height: 46px;
-  line-height: 1.33;
+  line-height: 1.33333;
   border-radius: 6px;
 }
 
@@ -160,7 +156,7 @@
  */
 .select2-container .select2-choice .select2-arrow,
 .select2-container .select2-choice div {
-  border-left: 1px solid #cccccc;
+  border-left: none;
   background: none;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
@@ -279,8 +275,8 @@
 .select2-container-multi.select2-container-active .select2-choices {
   border-color: #66afe9;
   outline: none;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
   -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
@@ -333,6 +329,8 @@
   border-top-left-radius: 0 !important;
   border-bottom-right-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
+  background: white;
+  filter: none;
 }
 .input-group.select2-bootstrap-prepend .select2-dropdown-open.select2-drop-above [class^="select2-choice"] {
   border-bottom-left-radius: 0 !important;
@@ -360,7 +358,7 @@
  */
 .select2-results .select2-highlighted {
   color: white;
-  background-color: #428bca;
+  background-color: #337ab7;
 }
 
 /**

@@ -6,5 +6,4 @@ desc "Update with Ivaynberg's select2 Library"
 task "update-select2" do
   files = SourceFile.new
   files.fetch
-  files.convert
 end

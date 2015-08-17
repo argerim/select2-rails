@@ -65,9 +65,9 @@ The last number of the version is the patch version specific to the gem. For exa
 
 If you want to contribute, please:
 
-	* Fork the project.
-	* Make your feature addition or bug fix.
-	* Send me a pull request on Github.
+* Fork the project.
+* Make your feature addition or bug fix.
+* Send me a pull request on Github.
 
 ## License
 

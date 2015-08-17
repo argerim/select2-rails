@@ -1,19 +1,3 @@
-/**
- * Select2 Thai translation.
- *
- * Author: Atsawin Chaowanakritsanakul <joke@nakhon.net>
- */
-(function ($) {
-    "use strict";
+/*! Select2 4.0.0-rc.2 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
-    $.fn.select2.locales['th'] = {
-        formatNoMatches: function () { return "ไม่พบข้อมูล"; },
-        formatInputTooShort: function (input, min) { var n = min - input.length; return "โปรดพิมพ์เพิ่มอีก " + n + " ตัวอักษร"; },
-        formatInputTooLong: function (input, max) { var n = input.length - max; return "โปรดลบออก " + n + " ตัวอักษร"; },
-        formatSelectionTooBig: function (limit) { return "คุณสามารถเลือกได้ไม่เกิน " + limit + " รายการ"; },
-        formatLoadMore: function (pageNumber) { return "กำลังค้นข้อมูลเพิ่ม…"; },
-        formatSearching: function () { return "กำลังค้นข้อมูล…"; }
-    };
-
-    $.extend($.fn.select2.defaults, $.fn.select2.locales['th']);
-})(jQuery);
+(function(){if(jQuery&&jQuery.fn&&jQuery.fn.select2&&jQuery.fn.select2.amd)var e=jQuery.fn.select2.amd;return e.define("select2/i18n/th",[],function(){return{inputTooLong:function(e){var t=e.input.length-e.maximum,n="โปรดลบออก "+t+" ตัวอักษร";return n},inputTooShort:function(e){var t=e.minimum-e.input.length,n="โปรดพิมพ์เพิ่มอีก "+t+" ตัวอักษร";return n},loadingMore:function(){return"กำลังค้นข้อมูลเพิ่ม…"},maximumSelected:function(e){var t="คุณสามารถเลือกได้ไม่เกิน "+e.maximum+" รายการ";return t},noResults:function(){return"ม่พบข้อมูล"},searching:function(){return"กำลังค้นข้อมูล…"}}}),{define:e.define,require:e.require}})();

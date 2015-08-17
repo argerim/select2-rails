@@ -1,25 +1,3 @@
-/**
- * Select2 Ukrainian translation.
- * 
- * @author  bigmihail <bigmihail@bigmir.net>
- * @author  Uriy Efremochkin <efremochkin@uriy.me>
- */
-(function ($) {
-    "use strict";
+/*! Select2 4.0.0-rc.2 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
-    $.fn.select2.locales['uk'] = {
-        formatMatches: function (matches) { return character(matches, "результат") + " знайдено, використовуйте клавіші зі стрілками вверх та вниз для навігації."; },
-        formatNoMatches: function () { return "Нічого не знайдено"; },
-        formatInputTooShort: function (input, min) { return "Введіть буль ласка ще " + character(min - input.length, "символ"); },
-        formatInputTooLong: function (input, max) { return "Введіть буль ласка на " + character(input.length - max, "символ") + " менше"; },
-        formatSelectionTooBig: function (limit) { return "Ви можете вибрати лише " + character(limit, "елемент"); },
-        formatLoadMore: function (pageNumber) { return "Завантаження даних…"; },
-        formatSearching: function () { return "Пошук…"; }
-    };
-
-    $.extend($.fn.select2.defaults, $.fn.select2.locales['uk']);
-
-    function character (n, word) {
-        return n + " " + word + (n%10 < 5 && n%10 > 0 && (n%100 < 5 || n%100 > 19) ? n%10 > 1 ? "и" : "" : "ів");
-    }
-})(jQuery);
+(function(){if(jQuery&&jQuery.fn&&jQuery.fn.select2&&jQuery.fn.select2.amd)var e=jQuery.fn.select2.amd;return e.define("select2/i18n/uk",[],function(){function e(e,t,n,r){return e%100>10&&e%100<15?r:e%10===1?t:e%10>1&&e%10<5?n:r}return{errorLoading:function(){return"Неможливо завантажити результати"},inputTooLong:function(t){var n=t.input.length-t.maximum;return"Будь ласка, видаліть "+n+" "+e(t.maximum,"літеру","літери","літер")},inputTooShort:function(e){var t=e.minimum-e.input.length;return"Будь ласка, введіть "+t+" або більше літер"},loadingMore:function(){return"Завантаження інших результатів…"},maximumSelected:function(t){return"Ви можете вибрати лише "+t.maximum+" "+e(t.maximum,"пункт","пункти","пунктів")},noResults:function(){return"Нічого не знайдено"},searching:function(){return"Пошук…"}}}),{define:e.define,require:e.require}})();

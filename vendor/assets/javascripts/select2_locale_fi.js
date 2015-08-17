@@ -1,30 +1,3 @@
-/**
- * Select2 Finnish translation
- */
-(function ($) {
-    "use strict";
-    $.fn.select2.locales['fi'] = {
-        formatNoMatches: function () {
-            return "Ei tuloksia";
-        },
-        formatInputTooShort: function (input, min) {
-            var n = min - input.length;
-            return "Ole hyvä ja anna " + n + " merkkiä lisää";
-        },
-        formatInputTooLong: function (input, max) {
-            var n = input.length - max;
-            return "Ole hyvä ja anna " + n + " merkkiä vähemmän";
-        },
-        formatSelectionTooBig: function (limit) {
-            return "Voit valita ainoastaan " + limit + " kpl";
-        },
-        formatLoadMore: function (pageNumber) {
-            return "Ladataan lisää tuloksia…";
-        },
-        formatSearching: function () {
-            return "Etsitään…";
-        }
-    };
+/*! Select2 4.0.0-rc.2 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
-    $.extend($.fn.select2.defaults, $.fn.select2.locales['fi']);
-})(jQuery);
+(function(){if(jQuery&&jQuery.fn&&jQuery.fn.select2&&jQuery.fn.select2.amd)var e=jQuery.fn.select2.amd;return e.define("select2/i18n/fi",[],function(){return{inputTooLong:function(e){var t=e.input.length-e.maximum;return"Ole hyvä ja anna "+t+" merkkiä vähemmän"},inputTooShort:function(e){var t=e.minimum-e.input.length;return"Ole hyvä ja anna "+t+" merkkiä lisää"},loadingMore:function(){return"Ladataan lisää tuloksia…"},maximumSelected:function(e){return"Voit valita ainoastaan "+e.maximum+" kpl"},noResults:function(){return"Ei tuloksia"},searching:function(){}}}),{define:e.define,require:e.require}})();

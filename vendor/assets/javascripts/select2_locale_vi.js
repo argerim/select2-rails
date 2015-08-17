@@ -1,20 +1,3 @@
-/**
- * Select2 Vietnamese translation.
- * 
- * Author: Long Nguyen <olragon@gmail.com>
- */
-(function ($) {
-    "use strict";
+/*! Select2 4.0.0-rc.2 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
-    $.fn.select2.locales['vi'] = {
-        formatNoMatches: function () { return "Không tìm thấy kết quả"; },
-        formatInputTooShort: function (input, min) { var n = min - input.length; return "Vui lòng nhập nhiều hơn " + n + " ký tự" + (n == 1 ? "" : "s"); },
-        formatInputTooLong: function (input, max) { var n = input.length - max; return "Vui lòng nhập ít hơn " + n + " ký tự" + (n == 1? "" : "s"); },
-        formatSelectionTooBig: function (limit) { return "Chỉ có thể chọn được " + limit + " tùy chọn" + (limit == 1 ? "" : "s"); },
-        formatLoadMore: function (pageNumber) { return "Đang lấy thêm kết quả…"; },
-        formatSearching: function () { return "Đang tìm…"; }
-    };
-
-    $.extend($.fn.select2.defaults, $.fn.select2.locales['vi']);
-})(jQuery);
-
+(function(){if(jQuery&&jQuery.fn&&jQuery.fn.select2&&jQuery.fn.select2.amd)var e=jQuery.fn.select2.amd;return e.define("select2/i18n/vi",[],function(){return{inputTooLong:function(e){var t=e.input.length-e.maximum,n="Vui lòng nhập ít hơn "+t+" ký tự";return t!=1&&(n+="s"),n},inputTooShort:function(e){var t=e.minimum-e.input.length,n="Vui lòng nhập nhiều hơn "+t+' ký tự"';return n},loadingMore:function(){return"Đang lấy thêm kết quả…"},maximumSelected:function(e){var t="Chỉ có thể chọn được "+e.maximum+" lựa chọn";return t},noResults:function(){return"Không tìm thấy kết quả"},searching:function(){return"Đang tìm…"}}}),{define:e.define,require:e.require}})();

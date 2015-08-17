@@ -1,17 +1,3 @@
-/**
- * Select2 Romanian translation.
- */
-(function ($) {
-    "use strict";
+/*! Select2 4.0.0-rc.2 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
-    $.fn.select2.locales['ro'] = {
-        formatNoMatches: function () { return "Nu a fost găsit nimic"; },
-        formatInputTooShort: function (input, min) { var n = min - input.length; return "Vă rugăm să introduceți incă " + n + " caracter" + (n == 1 ? "" : "e"); },
-        formatInputTooLong: function (input, max) { var n = input.length - max; return "Vă rugăm să introduceți mai puțin de " + n + " caracter" + (n == 1? "" : "e"); },
-        formatSelectionTooBig: function (limit) { return "Aveți voie să selectați cel mult " + limit + " element" + (limit == 1 ? "" : "e"); },
-        formatLoadMore: function (pageNumber) { return "Se încarcă…"; },
-        formatSearching: function () { return "Căutare…"; }
-    };
-
-    $.extend($.fn.select2.defaults, $.fn.select2.locales['ro']);
-})(jQuery);
+(function(){if(jQuery&&jQuery.fn&&jQuery.fn.select2&&jQuery.fn.select2.amd)var e=jQuery.fn.select2.amd;return e.define("select2/i18n/ro",[],function(){return{inputTooLong:function(e){var t=e.input.length-e.maximum,n="Vă rugăm să introduceți mai puțin de "+t;return n+=" caracter",n!==1&&(n+="e"),n},inputTooShort:function(e){var t=e.minimum-e.input.length,n="Vă rugăm să introduceți incă "+t;return n+=" caracter",n!==1&&(n+="e"),n},loadingMore:function(){return"Se încarcă…"},maximumSelected:function(e){var t="Aveți voie să selectați cel mult "+e.maximum;return t+=" element",t!==1&&(t+="e"),t},noResults:function(){return"Nu a fost găsit nimic"},searching:function(){return"Căutare…"}}}),{define:e.define,require:e.require}})();

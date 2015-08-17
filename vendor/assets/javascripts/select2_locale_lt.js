@@ -1,26 +1,3 @@
-/**
- * Select2 Lithuanian translation.
- * 
- * @author  CRONUS Karmalakas <cronus dot karmalakas at gmail dot com>
- * @author  Uriy Efremochkin <efremochkin@uriy.me>
- */
-(function ($) {
-    "use strict";
+/*! Select2 4.0.0-rc.2 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
-    $.fn.select2.locales['lt'] = {
-        formatNoMatches: function () { return "Atitikmenų nerasta"; },
-        formatInputTooShort: function (input, min) { return "Įrašykite dar" + character(min - input.length); },
-        formatInputTooLong: function (input, max) { return "Pašalinkite" + character(input.length - max); },
-        formatSelectionTooBig: function (limit) {
-        	return "Jūs galite pasirinkti tik " + limit + " element" + ((limit%100 > 9 && limit%100 < 21) || limit%10 == 0 ? "ų" : limit%10 > 1 ? "us" : "ą");
-        },
-        formatLoadMore: function (pageNumber) { return "Kraunama daugiau rezultatų…"; },
-        formatSearching: function () { return "Ieškoma…"; }
-    };
-
-    $.extend($.fn.select2.defaults, $.fn.select2.locales['lt']);
-
-    function character (n) {
-        return " " + n + " simbol" + ((n%100 > 9 && n%100 < 21) || n%10 == 0 ? "ių" : n%10 > 1 ? "ius" : "į");
-    }
-})(jQuery);
+(function(){if(jQuery&&jQuery.fn&&jQuery.fn.select2&&jQuery.fn.select2.amd)var e=jQuery.fn.select2.amd;return e.define("select2/i18n/lt",[],function(){function e(e,t,n,r){return e%100>9&&e%100<21||e%10===0?e%10>1?n:r:t}return{inputTooLong:function(t){var n=t.input.length-t.maximum,r="Pašalinkite "+n+" simbol";return r+=e(n,"ių","ius","į"),r},inputTooShort:function(t){var n=t.minimum-t.input.length,r="Įrašykite dar "+n+" simbol";return r+=e(n,"ių","ius","į"),r},loadingMore:function(){return"Kraunama daugiau rezultatų…"},maximumSelected:function(t){var n="Jūs galite pasirinkti tik "+t.maximum+" element";return n+=e(t.maximum,"ų","us","ą"),n},noResults:function(){return"Atitikmenų nerasta"},searching:function(){return"Ieškoma…"}}}),{define:e.define,require:e.require}})();

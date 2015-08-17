@@ -1,21 +1,3 @@
-/**
- * Select2 Persian translation.
- * 
- * Author: Ali Choopan <choopan@arsh.co>
- * Author: Ebrahim Byagowi <ebrahim@gnu.org>
- */
-(function ($) {
-    "use strict";
+/*! Select2 4.0.0-rc.2 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
-    $.fn.select2.locales['fa'] = {
-        formatMatches: function (matches) { return matches + " نتیجه موجود است، کلیدهای جهت بالا و پایین را برای گشتن استفاده کنید."; },
-        formatNoMatches: function () { return "نتیجه‌ای یافت نشد."; },
-        formatInputTooShort: function (input, min) { var n = min - input.length; return "لطفاً " + n + " نویسه بیشتر وارد نمایید"; },
-        formatInputTooLong: function (input, max) { var n = input.length - max; return "لطفاً " + n + " نویسه را حذف کنید."; },
-        formatSelectionTooBig: function (limit) { return "شما فقط می‌توانید " + limit + " مورد را انتخاب کنید"; },
-        formatLoadMore: function (pageNumber) { return "در حال بارگیری موارد بیشتر…"; },
-        formatSearching: function () { return "در حال جستجو…"; }
-    };
-
-    $.extend($.fn.select2.defaults, $.fn.select2.locales['fa']);
-})(jQuery);
+(function(){if(jQuery&&jQuery.fn&&jQuery.fn.select2&&jQuery.fn.select2.amd)var e=jQuery.fn.select2.amd;return e.define("select2/i18n/fa",[],function(){return{errorLoading:function(){return"امکان بارگذاری نتایج وجود ندارد."},inputTooLong:function(e){var t=e.input.length-e.maximum,n="لطفاً "+t+" کاراکتر را حذف نمایید";return n},inputTooShort:function(e){var t=e.minimum-e.input.length,n="لطفاً تعداد "+t+" کاراکتر یا بیشتر وارد نمایید";return n},loadingMore:function(){return"در حال بارگذاری نتایج بیشتر..."},maximumSelected:function(e){var t="شما تنها می‌توانید "+e.maximum+" آیتم را انتخاب نمایید";return t},noResults:function(){return"هیچ نتیجه‌ای یافت نشد"},searching:function(){return"در حال جستجو..."}}}),{define:e.define,require:e.require}})();

@@ -1,19 +1,3 @@
-/**
- * Select2 Estonian translation.
- *
- * Author: Kuldar Kalvik <kuldar@kalvik.ee>
- */
-(function ($) {
-    "use strict";
+/*! Select2 4.0.0-rc.2 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
-    $.fn.select2.locales['et'] = {
-        formatNoMatches: function () { return "Tulemused puuduvad"; },
-        formatInputTooShort: function (input, min) { var n = min - input.length; return "Sisesta " + n + " täht" + (n == 1 ? "" : "e") + " rohkem"; },
-        formatInputTooLong: function (input, max) { var n = input.length - max; return "Sisesta " + n + " täht" + (n == 1? "" : "e") + " vähem"; },
-        formatSelectionTooBig: function (limit) { return "Saad vaid " + limit + " tulemus" + (limit == 1 ? "e" : "t") + " valida"; },
-        formatLoadMore: function (pageNumber) { return "Laen tulemusi.."; },
-        formatSearching: function () { return "Otsin.."; }
-    };
-
-    $.extend($.fn.select2.defaults, $.fn.select2.locales['et']);
-})(jQuery);
+(function(){if(jQuery&&jQuery.fn&&jQuery.fn.select2&&jQuery.fn.select2.amd)var e=jQuery.fn.select2.amd;return e.define("select2/i18n/et",[],function(){return{inputTooLong:function(e){var t=e.input.length-e.maximum,n="Sisesta "+t+" täht";return t!=1&&(n+="e"),n+=" vähem",n},inputTooShort:function(e){var t=e.minimum-e.input.length,n="Sisesta "+t+" täht";return t!=1&&(n+="e"),n+=" rohkem",n},loadingMore:function(){return"Laen tulemusi…"},maximumSelected:function(e){var t="Saad vaid "+e.maximum+" tulemus";return e.maximum==1?t+="e":t+="t",t+=" valida",t},noResults:function(){return"Tulemused puuduvad"},searching:function(){return"Otsin…"}}}),{define:e.define,require:e.require}})();

@@ -1,19 +1,3 @@
-/**
- * Select2 Latvian translation.
- *
- * @author  Uriy Efremochkin <efremochkin@uriy.me>
- */
-(function ($) {
-    "use strict";
+/*! Select2 4.0.0-rc.2 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
-    $.fn.select2.locales['lv'] = {
-        formatNoMatches: function () { return "Sakritību nav"; },
-        formatInputTooShort: function (input, min) { var n = min - input.length; return "Lūdzu ievadiet vēl " + n + " simbol" + (n == 11 ? "us" : n%10 == 1 ? "u" : "us"); },
-        formatInputTooLong: function (input, max) { var n = input.length - max; return "Lūdzu ievadiet par " + n + " simbol" + (n == 11 ? "iem" : n%10 == 1 ? "u" : "iem") + " mazāk"; },
-        formatSelectionTooBig: function (limit) { return "Jūs varat izvēlēties ne vairāk kā " + limit + " element" + (limit == 11 ? "us" : limit%10 == 1 ? "u" : "us"); },
-        formatLoadMore: function (pageNumber) { return "Datu ielāde…"; },
-        formatSearching: function () { return "Meklēšana…"; }
-    };
-
-    $.extend($.fn.select2.defaults, $.fn.select2.locales['lv']);
-})(jQuery);
+(function(){if(jQuery&&jQuery.fn&&jQuery.fn.select2&&jQuery.fn.select2.amd)var e=jQuery.fn.select2.amd;return e.define("select2/i18n/lv",[],function(){function e(e,t,n,r){return e===11?t:e%10===1?n:r}return{inputTooLong:function(t){var n=t.input.length-t.maximum,r="Lūdzu ievadiet par  "+n;return r+=" simbol"+e(n,"iem","u","iem"),r+" mazāk"},inputTooShort:function(t){var n=t.minimum-t.input.length,r="Lūdzu ievadiet vēl "+n;return r+=" simbol"+e(n,"us","u","us"),r},loadingMore:function(){return"Datu ielāde…"},maximumSelected:function(t){var n="Jūs varat izvēlēties ne vairāk kā "+t.maximum;return n+=" element"+e(t.maximum,"us","u","us"),n},noResults:function(){return"Sakritību nav"},searching:function(){return"Meklēšana…"}}}),{define:e.define,require:e.require}})();

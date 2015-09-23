@@ -30,6 +30,12 @@ If you are using Twitter Boostrap you need to also require the bootstrap theme C
 
 	*= require select2-bootstrap
 
+To apply the theme, tell Select2 to do so by passing `bootstrap` to the [`theme`](https://select2.github.io/examples.html#themes) option when initializing Select2:
+
+    $( "#dropdown" ).select2({
+        theme: "bootstrap"
+    });
+
 ## Internationalization (i18n)
 
 The `select2-rails` now supports multiple languages.

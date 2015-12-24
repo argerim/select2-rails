@@ -27,10 +27,9 @@ class SourceFile < Thor
   end
 
   def languages
-    [ "az", "bg", "ca", "cs", "da", "de", "en", "es", "et", "eu", "fa", "fi", "fr", "gl", "he", "hi", "hr", "hu",
-      "id", "is", "it", "ko", "lt", "lv", "mk", "nb", "nl", "pl", "pt-BR", "pt", "ro", "ru", "sk", "sr",
-      "sv", "th", "tr", "uk", "vi", "zh-CN", "zh-TW"
-    ].sort
+    [ "ar", "az", "bg", "ca", "cs", "da", "de", "en", "es", "et", "eu", "fa", "fi", "fr", "gl", "he", "hi", "hr", "hu",
+      "id", "is", "it", "ja", "ko", "lt", "lv", "mk", "ms", "nb", "nl", "pl", "pt", "pt-BR", "ro", "ru", "sk", "sr", "sr-Cyrl",
+      "sv", "th", "tr", "uk", "vi", "zh-CN", "zh-TW"].sort
   end
 
   def select msg, elements

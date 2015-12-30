@@ -20,6 +20,10 @@ Add the following to your `app/assets/javascripts/application.js`:
 
 	//= require select2
 
+alternatively, for the [full build](http://select2.github.io#builds):
+
+	//= require select2.full
+
 ### Include select2-rails stylesheet assets
 
 Add to your `app/assets/stylesheets/application.css`:

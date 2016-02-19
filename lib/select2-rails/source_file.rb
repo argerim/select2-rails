@@ -12,7 +12,7 @@ class SourceFile < Thor
     self.destination_root = "vendor/assets"
     remote = "https://github.com/select2/select2"
     get "#{remote}/raw/#{tag}/dist/css/select2.css", "stylesheets/select2.css"
-    get "#{remote}/raw/#{tag}/dist/js/select2.full.js", "javascripts/select2.full.js"
+    get "#{remote}/raw/#{tag}/dist/js/select2.full.js", "javascripts/select2-full.js"
     get "#{remote}/raw/#{tag}/dist/js/select2.js", "javascripts/select2.js"
     languages.each do |lang|
       get "#{remote}/raw/#{tag}/dist/js/i18n/#{lang}.js", "javascripts/select2_locale_#{lang}.js"

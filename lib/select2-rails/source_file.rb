@@ -8,14 +8,15 @@ class SourceFile < Thor
   desc "fetch source files", "fetch source files from GitHub"
   def fetch
     filtered_tags = fetch_tags
-    tag = select("Which tag do you want to fetch?", filtered_tags)
+    tag = select("Which tag do you want to fetch? (use numbered indicies left of the version number)", filtered_tags)
     self.destination_root = "vendor/assets"
-    remote = "https://github.com/select2/select2"
-    get "#{remote}/raw/#{tag}/dist/css/select2.css", "stylesheets/select2.css"
-    get "#{remote}/raw/#{tag}/dist/js/select2.full.js", "javascripts/select2-full.js"
-    get "#{remote}/raw/#{tag}/dist/js/select2.js", "javascripts/select2.js"
+    remote = "https://raw.githubusercontent.com/select2/select2"
+    puts "Fetching from: #{remote}/#{tag}/dist/js/select2.*"
+    get "#{remote}/#{tag}/dist/css/select2.css", "stylesheets/select2.css"
+    get "#{remote}/#{tag}/dist/js/select2.full.js", "javascripts/select2-full.js"
+    get "#{remote}/#{tag}/dist/js/select2.js", "javascripts/select2.js"
     languages.each do |lang|
-      get "#{remote}/raw/#{tag}/dist/js/i18n/#{lang}.js", "javascripts/select2_locale_#{lang}.js"
+      get "#{remote}/#{tag}/dist/js/i18n/#{lang}.js", "javascripts/select2_locale_#{lang}.js"
     end
   end
 

@@ -50,7 +50,7 @@ Add the following to your `app/assets/javascripts/application.js`:
 
 Possible languages:
 
-	az, bg, ca, cs, da, de, en, es, et, eu, fi, fr, gl, hi, hr, hu, id, is, it, lt, lv, mk, nb, nl, pl, pt-BR, pt, ro, ru, sk, sr, sv, th, tr, uk, vi, zh-CN, zh-TW
+	ar, az, bg, ca, cs, da, de, en, es, et, eu, fa, fi, fr, gl, he, hi, hr, hu, id, is, it, ja, ko, lt, lv, mk, ms, nb, nl, pl, pt, pt-BR, ro, ru, sk, sr, sr-Cyrl, sv, th, tr, uk, vi, zh-CN, zh-TW
 
 ## Example
 Code [here](https://github.com/argerim/select_2_example)

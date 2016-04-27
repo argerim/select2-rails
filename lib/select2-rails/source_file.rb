@@ -14,7 +14,7 @@ class SourceFile < Thor
     get "#{remote}/raw/#{tag}/dist/css/select2.css", "stylesheets/select2.css"
     get "#{remote}/raw/#{tag}/dist/js/select2.full.js", "javascripts/select2-full.js"
     get "#{remote}/raw/#{tag}/dist/js/select2.js", "javascripts/select2.js"
-    languages.each do |lang|
+    languages(tag).each do |lang|
       get "#{remote}/raw/#{tag}/dist/js/i18n/#{lang}.js", "javascripts/select2_locale_#{lang}.js"
     end
   end
@@ -22,15 +22,17 @@ class SourceFile < Thor
   private
 
   def fetch_tags
-    http = HTTPClient.new
-    response = JSON.parse(http.get("https://api.github.com/repos/select2/select2/tags").body)
+    response = JSON.parse(http_client.get("https://api.github.com/repos/select2/select2/tags").body)
     response.map{|tag| tag["name"]}.sort
   end
 
-  def languages
-    [ "ar", "az", "bg", "ca", "cs", "da", "de", "en", "es", "et", "eu", "fa", "fi", "fr", "gl", "he", "hi", "hr", "hu",
-      "id", "is", "it", "ja", "ko", "lt", "lv", "mk", "ms", "nb", "nl", "pl", "pt", "pt-BR", "ro", "ru", "sk", "sr", "sr-Cyrl",
-      "sv", "th", "tr", "uk", "vi", "zh-CN", "zh-TW"].sort
+  def http_client
+    @http_client ||= HTTPClient.new
+  end
+
+  def languages(tag)
+    response = JSON.parse(http_client.get("https://api.github.com/repos/select2/select2/contents/src/js/select2/i18n?ref=#{tag}").body)
+    response.map {|file| file["name"].gsub('.js', '')}.sort
   end
 
   def select msg, elements

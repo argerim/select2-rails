@@ -26,7 +26,7 @@ To add `select2-full.js` instead of `select2.js`, add the following instead :
 
 ### Include select2-rails stylesheet assets
 
-Add to your `app/assets/stylesheets/application.css`:
+Add to your `app/assets/stylesheets/application.css.scss`:
 
 	*= require select2
 

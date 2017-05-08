@@ -48,6 +48,12 @@ Add the following to your `app/assets/javascripts/application.js`:
 
 	//= require select2_locale_"any possible language"
 
+To apply the language, pass whatever language you'd like to use to the [`language`](https://select2.github.io/examples.html#language) option when initializing Select2:
+
+    $( "#dropdown" ).select2({
+        language: "zh-TW"
+    });
+
 Possible languages:
 
 	ar, az, bg, ca, cs, da, de, el, en, es, et, eu, fa, fi, fr, gl, he, hi, hr, hu, id, is, it, ja, km, ko, lt, lv, mk, ms, nb, nl, pl, pt, pt-BR, ro, ru, sk, sr, sr-Cyrl, sv, th, tr, uk, vi, zh-CN, zh-TW

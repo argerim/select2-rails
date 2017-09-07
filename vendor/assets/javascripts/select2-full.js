@@ -4267,7 +4267,8 @@ S2.define('select2/dropdown/attachBody',[
 
     var css = {
       left: offset.left,
-      top: container.bottom
+      top: container.bottom,
+      padding: '0 0 20px 0'
     };
 
     // Determine what the parent element is to use for calciulating the offset

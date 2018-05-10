@@ -10,7 +10,7 @@ class SourceFile < Thor
     filtered_tags = fetch_tags
     tag = select("Which tag do you want to fetch?", filtered_tags)
     self.destination_root = "vendor/assets"
-    remote = "https://github.com/select2/select2"
+    remote = "https://github.com/uniqueway/select2"
     get "#{remote}/raw/#{tag}/dist/css/select2.css", "stylesheets/select2.css"
     get "#{remote}/raw/#{tag}/dist/js/select2.full.js", "javascripts/select2-full.js"
     get "#{remote}/raw/#{tag}/dist/js/select2.js", "javascripts/select2.js"
@@ -22,7 +22,7 @@ class SourceFile < Thor
   private
 
   def fetch_tags
-    response = JSON.parse(http_client.get("https://api.github.com/repos/select2/select2/tags").body)
+    response = JSON.parse(http_client.get("https://api.github.com/repos/uniqueway/select2/tags").body)
     response.map{|tag| tag["name"]}.sort
   end
 
@@ -31,7 +31,7 @@ class SourceFile < Thor
   end
 
   def languages(tag)
-    response = JSON.parse(http_client.get("https://api.github.com/repos/select2/select2/contents/src/js/select2/i18n?ref=#{tag}").body)
+    response = JSON.parse(http_client.get("https://api.github.com/repos/uniqueway/select2/contents/src/js/select2/i18n?ref=#{tag}").body)
     response.map {|file| file["name"].gsub('.js', '')}.sort
   end
 

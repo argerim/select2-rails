@@ -33,11 +33,21 @@ Add to your `app/assets/stylesheets/application.css`:
 If you are using Twitter Boostrap you need to also require the bootstrap theme CSS in addition to the above require.
 
 	*= require select2-bootstrap
+	
+or if you're using Bootstrap 4:
+
+	*= require select2-bootstrap4
 
 To apply the theme, tell Select2 to do so by passing `bootstrap` to the [`theme`](https://select2.github.io/examples.html#themes) option when initializing Select2:
 
     $( "#dropdown" ).select2({
         theme: "bootstrap"
+    });
+    
+or if you're using Bootstrap 4:
+
+    $( "#dropdown" ).select2({
+        theme: "bootstrap4"
     });
 
 ## Internationalization (i18n)

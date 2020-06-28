@@ -56,7 +56,7 @@ To apply the language, pass whatever language you'd like to use to the [`languag
 
 Possible languages:
 
-	af, ar, az, bg, bn, bs, ca, cs, da, de, dsb, el, en, es, et, eu, fa, fi, fr, gl, he, hi, hr, hsb, hu, hy, id, is, it, ja, ka, km, ko, lt, lv, mk, ms, nb, ne, nl, pl, ps, pt, pt-BR, ro, ru, sk, sl, sq, sr, sr-Cyrl, sv, th, tk, tr, uk, vi, zh-CN, zh-TW
+	af, ar, az, bg, bn, bs, ca, cs, da, de, dsb, el, en, eo, es, et, eu, fa, fi, fr, gl, he, hi, hr, hsb, hu, hy, id, is, it, ja, ka, km, ko, lt, lv, mk, ms, nb, ne, nl, pa, pl, ps, pt, pt-BR, ro, ru, sk, sl, sq, sr, sr-Cyrl, sv, th, tk, tr, uk, vi, zh-CN, zh-TW
 
 ## Example
 Code [here](https://github.com/argerim/select_2_example)
